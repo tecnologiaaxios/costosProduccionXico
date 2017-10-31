@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="css/bootstrap-datepicker3.standalone.css">
     <link rel="stylesheet" href="css/table-scrollable.css">
+    <link rel="stylesheet" href="select.dataTables.min.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -90,15 +91,9 @@
         <img class="navbar-brand" id="logo" src="logo.png"></img>
         <ul style="margin-top:50px; list-style:none; font-size:50px; color:white; padding:28px;">
           <li>
-            <a style="color:white; text-decoration: none;" href="precios.html">
-              <span style="font-size:50px;" class="material-icons no-padding">attach_money</span>
-              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-15px;">Ir a los precios</p>
-            </a>
-          </li>
-          <li>
-            <a style="color:white; text-decoration: none;" href="tiposCambio.html">
-              <span style="font-size:50px;" class="fa fa-money"></span>
-              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-15px;">Tipos de cambio</p>
+            <a style="color:white; text-decoration: none;" href="panel.html">
+              <span style="font-size:50px;" class="fa fa-arrow-left"></span>
+              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-10px;">Volver al panel</p>
             </a>
           </li>
         </ul>
@@ -106,77 +101,84 @@
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="page-header">Tablero de costos</h1>
+            <h1 class="page-header">Tablero de tipos de cambio</h1>
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-2 col-md-2">
-            <a class="thumbnail-a" href="#">
-              <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="Jamón de pavo">
-                <h3 class="text-center">PT-35-01</h3>
-                <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-                <div class="panel-footer">
-                  <h4 class="text-center">Peso: 20 Kg</h4>
-                  <h4 class="text-center">Costo: $ 190.00</h4>
-                </div>
+          <div class="col-lg-6 col-md-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                Nuevo tipo de cambio
               </div>
-            </a>
-          </div>
-          <div class="col-sm-2 col-md-2">
-            <a class="thumbnail-a" href="#">
-              <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="Jamón americano de pavo">
-                <h3 class="text-center">PT-80-01</h3>
-                <img src="img/3Americano PAVO.jpg" style="height: 200px;">
-                <div class="panel-footer">
-                  <h4 class="text-center">Peso: 20 Kg</h4> 
-                  <h4 class="text-center">Costo: $ 190.00</h4> 
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-sm-2 col-md-2">
-            <div class="thumbnail card">
-              <h3 class="text-center">Americano de pavo y cerdo</h3>
-              <img src="img/2Americano.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-2 col-md-2">
-            <div class="thumbnail card">
-              <h3 class="text-center">JAMON DE PAVO</h3>
-              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-2 col-md-2">
-            <div class="thumbnail card">
-              <h3 class="text-center">JAMON DE PAVO</h3>
-              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-2 col-md-2">
-            <div class="thumbnail card">
-              <h3 class="text-center">JAMON DE PAVO</h3>
-              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
+              <div class="panel-body">
+                <form role="form">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" class="form-control" name="fecha" id="fecha" placeholder="" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="dolar">Dólar:</label>
+                        <div class="input-group">
+                          <span class="input-group-addon" id="basic-addon1">$</span>
+                          <input step="any" type="number" name="dolar" id="dolar" class="form-control">
+                        </div>
+                        <span id="helpBlockDolar" class="hidden help-block">Campo obligatorio</span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="euro">Euro:</label>
+                        <div class="input-group">
+                          <span class="input-group-addon" id="basic-addon1">&#8364;</span>
+                          <input step="any" type="number" name="euro" id="euro" class="form-control">
+                        </div>
+                        <span id="helpBlockEuro" class="hidden help-block">Campo obligatorio</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button id="btnModalGuardar" type="button" class="btn btn-success pull-right">Guardar</button>
+                </form><br><br><br>
+                <table id="tabla-tipoCambio"class="table table-bordered table-striped table-hover table-condensed">
+                  <thead>
+                    <th>Fecha</th>
+                    <th>Dólar</th>
+                    <th>Euro</th>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div><!-- /#page-wrapper -->
-    </div><!-- /#wrapper -->            
+    </div><!-- /#wrapper -->    
+    
+    <div id="modalConfirmarGuardar"class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Guardar Tipo de Cambio</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Está usted seguro de registrar este Tipo de Cambio?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <button id="btnGuardar" type="button" onclick="registrarTipoCambio()" data-dismiss="modal" class="btn btn-primary">Si</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->    
+
+
+
     <!-- jQuery -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script> -->
     <script src="js/jquery-3.2.1.min.js"></script>
@@ -195,9 +197,9 @@
     <script src="dist/js/bootstrap-select.js"></script>
     <script src="vendor/metisMenu/metisMenu.min.js"></script>
     <!-- Morris Charts JavaScript -->
-    <script src="vendor/raphael/raphael.min.js"></script>
+    <!--<script src="vendor/raphael/raphael.min.js"></script>
     <script src="vendor/morrisjs/morris.min.js"></script>
-    <script src="data/morris-data.js"></script>
+    <script src="data/morris-data.js"></script>-->
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
     <!-- DataTables JavaScript -->
@@ -226,6 +228,6 @@
     </script>
     <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/$VERSION/dragula.min.js'></script>-->
     <script src="js/moment-with-locales.js"></script>
-    <script src="js/panel.js"></script>
+    <script src="js/tipoCambio.js"></script>
   </body>
 </html>

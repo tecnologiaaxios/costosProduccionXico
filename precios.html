@@ -89,18 +89,35 @@
       <div class="barside">
         <img class="navbar-brand" id="logo" src="logo.png"></img>
         <ul style="margin-top:50px; list-style:none; font-size:50px; color:white; padding:28px;">
-          <a style="color:white; text-decoration: none;" href="panel.html">
-            <span style="font-size:50px;" class="material-icons no-padding">keyboard_backspace</span>
-            <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-15px;">Volver al panel</p>
-          </a>
+          <li>
+            <a style="color:white; text-decoration: none;" href="panel.html">
+              <span style="font-size:50px;" class="fa fa-arrow-left"></span>
+              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-10px;">Volver al panel</p>
+            </a>
+          </li>
         </ul>
       </div>
       <div id="page-wrapper">
         <div class="row">
-            <div class="col-lg-12">
-              <h1 class="page-header">Tablero de precios</h1>
-            </div>
+          <div class="col-lg-12">
+            <h1 class="page-header">Tablero de precios</h1>
           </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            <label for="">Sub Productos:</label>
+            <table id="tabla-subProductos" class="table table-condensed table-striped table-bordered table-hover">
+              <thead>
+                <th>Clave</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div><!-- /#page-wrapper -->
     </div><!-- /#wrapper -->            
     <!-- jQuery -->
@@ -121,9 +138,9 @@
     <script src="dist/js/bootstrap-select.js"></script>
     <script src="vendor/metisMenu/metisMenu.min.js"></script>
     <!-- Morris Charts JavaScript -->
-    <script src="vendor/raphael/raphael.min.js"></script>
+    <!--<script src="vendor/raphael/raphael.min.js"></script>
     <script src="vendor/morrisjs/morris.min.js"></script>
-    <script src="data/morris-data.js"></script>
+    <script src="data/morris-data.js"></script>-->
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
     <!-- DataTables JavaScript -->
@@ -152,6 +169,6 @@
     </script>
     <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/$VERSION/dragula.min.js'></script>-->
     <script src="js/moment-with-locales.js"></script>
-    <script src="js/panel.js"></script>
+    <script src="js/precios.js"></script>
   </body>
 </html>
