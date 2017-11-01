@@ -6,9 +6,9 @@ function logout() {
 }
   
 function registrarTipoCambio() {
-  let fecha = moment().format('DD/MM/YYYY')
-  let dolar = $('#dolar').val();
-  let euro = $('#euro').val();
+  let fecha = moment().format('DD/MM/YYYY');
+  let dolar = Number($('#dolar').val());
+  let euro = Number($('#euro').val());
   
   let refGuardarTipoCambio = db.ref(`tipoCambio`)
   refGuardarTipoCambio.push({
@@ -21,7 +21,7 @@ function registrarTipoCambio() {
   $('#euro').val("");
 }
   
-$('#euro').change(function(){
+$('#euro').keyup(function(){
   let euro = $(this).val();
   if(euro.length<1){
     $('#euro').parent().parent().addClass('has-error');
@@ -32,7 +32,7 @@ $('#euro').change(function(){
   }
 });
   
-$('#dolar').change(function(){
+$('#dolar').keyup(function(){
   let dolar = $(this).val();
   
   if(dolar.length<1){
@@ -77,7 +77,6 @@ function mostrarTipoCambio() {
     "language": {
       "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
     },
-    "searching": false,
     "ordering": false
   });
   
@@ -97,10 +96,9 @@ function mostrarTipoCambio() {
     for(let tipoCambio in arrayTiposCambios) {
     filas += `<tr>
                 <td>${arrayTiposCambios[tipoCambio].fecha}</td>
-                <td>${arrayTiposCambios[tipoCambio].dolar}</td>
-                <td>${arrayTiposCambios[tipoCambio].euro}</td>
+                <td class="text-right">$ ${arrayTiposCambios[tipoCambio].dolar}</td>
+                <td class="text-right">&#8364; ${arrayTiposCambios[tipoCambio].euro}</td>
               </tr>`;
-  
       //$('#table-tipoCambio tbody').html(filas);
     }
     tabla.rows.add($(filas)).columns.adjust().draw();
@@ -183,6 +181,9 @@ $('#campana').click(function() {
 
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
+  mostrarTipoCambio();
+  requestData();
+  addChart();
   
   $('#fecha').val(moment().format('YYYY-MM-DD'));
   
@@ -192,3 +193,83 @@ $(document).ready(function() {
     }
   });
 });
+
+function transformChart() {
+  chart.transform(this.id);
+}
+
+function requestData() {
+
+  var total;
+  $("#spinner").addClass('fa-refresh');
+
+  myFirebaseRef.on("value", function(data) {
+    total = 0;
+    charData = [];
+    var comidas = data.val();
+    var arr;
+
+    for(comida in comidas) {
+      //console.log(comida, comidas[comida].votos, comidas[comida]);
+      $("#votos_" + comida + " span").text(comidas[comida].votos);
+      arr = [comida, comidas[comida].votos];
+      chartData.push(arr);
+      total += Number(comidas[comida].votos);
+    }
+
+    $("#total span").html(total);
+    //chart.load({
+    chart.flow({
+      columns: chartData
+    });
+
+    $("#spinner").removeClass('fa-refresh');
+  })
+}
+
+function addChart() {
+  chart = c3.generate({
+    bindto: "#chart",
+    data: {
+      type: 'spline',
+      columns: chartData,
+      colors: {
+        tacos: '#265a88',
+        paella: '#419641',
+        ceviche: '#2aabd2',
+        mangu: '#eb9316'
+      },
+      names: {
+        tacos: 'Tacos al pastor',
+        paella: 'Paella Valenciana',
+        ceviche: 'Ceviche Peruano',
+        mangu: 'Mangú'
+      }
+    },
+    bar: {
+      width: {
+        ratio: 1
+      }
+    },
+    tooltip: {
+      format: {
+        title: function(x) {
+          return 'Estado de votación';
+        }
+      }
+    },
+    axis: {
+      rotated: false,
+      y: {
+        label: 'Cantidad de votos'
+      },
+      x: {
+        show: true,
+        label: 'Comidas'
+      }
+    },
+    donut: {
+      title: "La comida favorita"
+    }
+  })
+}

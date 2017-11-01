@@ -665,3 +665,20 @@ img {
   text-decoration: none !important; 
   color:#333 !important;
 }
+
+.grafica {
+  width: 600px;
+  height: 512px;
+  float: left;
+  padding-right: 10px;
+  text-align: center;
+}
+
+.grafica h1 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.grafica button {
+  margin-top: 20px;
+}

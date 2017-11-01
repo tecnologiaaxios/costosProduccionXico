@@ -5,10 +5,52 @@ function logout() {
   auth.signOut();
 }
 
-$('#tabla-subProductos-editar td').on('change', function(evt, newValue) {
-	let formulasRef = db.ref('formulaciones');
+function mostrarProductos() {
+  let fecha = moment().format('DD/MM/YYYY');
 
-});
+  let rutaBatidas = db.ref('batidas');
+  rutaBatidas.orderByChild('fechaCaptura').equalTo(fecha).on('value', function(datos) {
+    let productos = datos.val();
+    let cantidadProductos = Object.keys(productos).length;
+    let numFilas = cantidadProductos / 6;
+
+    for(let producto in productos) {
+      let thumnail = ``;
+    }
+  });
+}
+
+function abrirModalProducto(idProducto) {
+  let tabla = $(`#tabla-subProductos`).DataTable({
+    destroy: true,
+    "lengthChange": false,
+    "scrollY": "500px",
+    "scrollCollapse": true,
+    "language": {
+      "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
+    },
+    "ordering": false
+  });
+  $('#modalProducto').modal('show');
+
+  let rutaSubProductos = db.ref(`subProductos/${idProducto}`);
+  rutaSubProductos.once('value', function(snap) {
+    let subProductos = snap.val();
+    let filas = "";
+    tabla.clear();
+
+    for(let subProducto in subProductos) {
+      filas += `<tr>
+                  <td>${subProducto}</td>
+                  <td>${subProductos[subProducto].nombre}</td>
+                  <td>${subProductos[subProducto].valorConstante}</td>
+                  <td>${subProductos[subProducto].precio}</td>
+                  <td>${(subProductos[subProducto].valorConstante * subProductos[subProducto].precio).toFixed(4)}</td<
+               </tr>`;
+    }
+    tabla.rows.add($(filas)).columns.adjust().draw();
+  })
+}
 
 function haySesion() {
   auth.onAuthStateChanged(function (user) {
@@ -85,6 +127,8 @@ $('#campana').click(function() {
 
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
+
+  mostrarProductos();
 
   $.toaster({
     settings: {
