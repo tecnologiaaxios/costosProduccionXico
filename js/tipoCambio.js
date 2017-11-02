@@ -182,8 +182,6 @@ $('#campana').click(function() {
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
   mostrarTipoCambio();
-  requestData();
-  addChart();
   
   $('#fecha').val(moment().format('YYYY-MM-DD'));
   
@@ -193,83 +191,3 @@ $(document).ready(function() {
     }
   });
 });
-
-function transformChart() {
-  chart.transform(this.id);
-}
-
-function requestData() {
-
-  var total;
-  $("#spinner").addClass('fa-refresh');
-
-  myFirebaseRef.on("value", function(data) {
-    total = 0;
-    charData = [];
-    var comidas = data.val();
-    var arr;
-
-    for(comida in comidas) {
-      //console.log(comida, comidas[comida].votos, comidas[comida]);
-      $("#votos_" + comida + " span").text(comidas[comida].votos);
-      arr = [comida, comidas[comida].votos];
-      chartData.push(arr);
-      total += Number(comidas[comida].votos);
-    }
-
-    $("#total span").html(total);
-    //chart.load({
-    chart.flow({
-      columns: chartData
-    });
-
-    $("#spinner").removeClass('fa-refresh');
-  })
-}
-
-function addChart() {
-  chart = c3.generate({
-    bindto: "#chart",
-    data: {
-      type: 'spline',
-      columns: chartData,
-      colors: {
-        tacos: '#265a88',
-        paella: '#419641',
-        ceviche: '#2aabd2',
-        mangu: '#eb9316'
-      },
-      names: {
-        tacos: 'Tacos al pastor',
-        paella: 'Paella Valenciana',
-        ceviche: 'Ceviche Peruano',
-        mangu: 'Mangú'
-      }
-    },
-    bar: {
-      width: {
-        ratio: 1
-      }
-    },
-    tooltip: {
-      format: {
-        title: function(x) {
-          return 'Estado de votación';
-        }
-      }
-    },
-    axis: {
-      rotated: false,
-      y: {
-        label: 'Cantidad de votos'
-      },
-      x: {
-        show: true,
-        label: 'Comidas'
-      }
-    },
-    donut: {
-      title: "La comida favorita"
-    }
-  })
-}
