@@ -166,7 +166,7 @@ function abrirModalProducto(idBatida) {
   let tabla = $(`#tabla-subProductos`).DataTable({
     destroy: true,
     "lengthChange": false,
-    "scrollY": "500px",
+    "scrollY": "300px",
     "scrollCollapse": true,
     "language": {
       "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
@@ -208,11 +208,12 @@ function abrirModalProducto(idBatida) {
                     </tr>`;
 
           tabla.rows.add($(fila))
+          tabla.columns.adjust().draw();
         }
       });
       
     }
-    tabla.columns.adjust().draw();
+    
   })
 }
 
