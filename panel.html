@@ -110,70 +110,29 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-2 col-md-3">
-            <a class="thumbnail-a" onclick="abrirModalProducto('PT-35-01')">
-              <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="Jamón de pavo">
-                <h3 class="text-center">PT-35-01</h3>
-                <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-                <div class="panel-footer">
-                  <h4 class="text-center">Peso: 20 Kg</h4>
-                  <h4 class="text-center">Costo: $ 190.00</h4>
+          <div class="col-md-4 col-sm-4 col-lg-2">
+            <div class="form-group">
+              <label for="">Filtrar por fecha:</label>
+              <div class="input-group">
+                  <input id="fecha" class="form-control" type="date">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onclick="filtrarPorFecha()" data-toggle="tooltip" data-placement="bottom" title="Filtrar"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                  </span>
                 </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-sm-2 col-md-3">
-            <a class="thumbnail-a" href="#">
-              <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="Jamón americano de pavo">
-                <h3 class="text-center">PT-80-01</h3>
-                <img src="img/3Americano PAVO.jpg" style="height: 200px;">
-                <div class="panel-footer">
-                  <h4 class="text-center">Peso: 20 Kg</h4> 
-                  <h4 class="text-center">Costo: $ 190.00</h4> 
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-sm-2 col-md-3">
-            <div class="thumbnail card">
-              <h3 class="text-center">Americano de pavo y cerdo</h3>
-              <img src="img/2Americano.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
-              </div>
             </div>
           </div>
-          <div class="col-sm-2 col-md-3">
-            <div class="thumbnail card">
-              <h3 class="text-center">JAMON DE PAVO</h3>
-              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
-              </div>
-            </div>
-          </div>
-          <!--<div class="col-sm-2 col-md-2">
-            <div class="thumbnail card">
-              <h3 class="text-center">JAMON DE PAVO</h3>
-              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-2 col-md-2">
-            <div class="thumbnail card">
-              <h3 class="text-center">JAMON DE PAVO</h3>
-              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
-              <div class="panel-footer">
-                <h4 class="text-center">Peso: 20 Kg</h4>
-                <h4 class="text-center">Costo: $ 190.00</h4>
-              </div>
-            </div>
-          </div>-->
+        </div>
+        <div id="fila-xs" class="row visible-xs">
+          
+        </div>
+        <div id="fila-sm" class="row visible-sm">
+          
+        </div>
+        <div id="fila-md" class="row visible-md">
+          
+        </div>
+        <div id="fila-lg" class="row visible-lg">
+          
         </div>
       </div><!-- /#page-wrapper -->
     </div><!-- /#wrapper -->
@@ -185,8 +144,45 @@
             <h4 class="modal-title">Datos del producto</h4>
           </div>
           <div class="modal-body">
-            
-
+            <form>
+              <div class="row">
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="claveProducto">Clave:</label>
+                    <input id="claveProducto" name="claveProducto" type="text" class="form-control input-lg" readonly>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="nombreProducto">Nombre:</label>
+                    <input id="nombreProducto" name="nombreProducto" type="text" class="form-control input-lg" readonly>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="costo">Costo:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input id="costo" name="costo" type="text" class="form-control input-lg" readonly>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="kilos">Kilos:</label>
+                    <input id="kilos" name="kilos" type="text" class="form-control input-lg" readonly>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    <div class="form-group">
+                      <label for="piezas">Piezas:</label>
+                      <input id="piezas" name="piezas" type="text" class="form-control input-lg" readonly>
+                    </div>
+                  </div>
+              </div>
+            </form>
             <table id="tabla-subProductos" class="table table-hover table-bordered table-striped table-condensed">
               <thead>
                 <th>Clave</th>
@@ -196,7 +192,7 @@
                 <th>Importe</th>
               </thead>
               <tbody>
-                
+
               </tbody>
             </table>
           </div>
@@ -206,7 +202,7 @@
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->           
+    </div><!-- /.modal -->
     <!-- jQuery -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script> -->
     <script src="js/jquery-3.2.1.min.js"></script>

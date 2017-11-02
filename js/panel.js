@@ -11,16 +11,158 @@ function mostrarProductos() {
   let rutaBatidas = db.ref('batidas');
   rutaBatidas.orderByChild('fechaCaptura').equalTo(fecha).on('value', function(datos) {
     let productos = datos.val();
-    let cantidadProductos = Object.keys(productos).length;
-    let numFilas = cantidadProductos / 6;
+    let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
 
     for(let producto in productos) {
-      let thumnail = ``;
+      let finalizada = (productos[producto].estado === "Finalizada") ? true : false;
+
+      if(finalizada) {
+        thumbnailsXs += `<div class="col-xs-12">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`; 
+
+        thumbnailsSm += `<div class="col-sm-6">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`;
+        
+        thumbnailsMd += `<div class="col-md-3">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`;
+
+        thumbnailsLg += `<div class="col-lg-2">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`;
+      }
     }
+
+    $('#fila-xs').html(thumbnailsXs);
+    $('#fila-sm').html(thumbnailsSm);
+    $('#fila-md').html(thumbnailsMd);
+    $('#fila-lg').html(thumbnailsLg);
+    $('[data-toggle="tooltip"]').tooltip();
   });
 }
 
-function abrirModalProducto(idProducto) {
+function filtrarPorFecha() {
+  let fechaString = $('#fecha').val();
+  var date = fechaString.split("-");
+  let dia = date[2];
+  let mes = date[1];
+  let año = date[0];
+
+  let dateObj = new Date(`${mes}/${dia}/${año}`);
+  let fecha = moment(dateObj).format('DD/MM/YYYY');
+
+  let rutaBatidas = db.ref('batidas');
+  rutaBatidas.orderByChild('fechaCaptura').equalTo(fecha).once('value', function(snap) {
+    let productos = snap.val();
+    let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
+
+    for(let producto in productos) {
+      let finalizada = (productos[producto].estado === "Finalizada") ? true : false;
+
+      if(finalizada) {
+        thumbnailsXs += `<div class="col-xs-12">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`; 
+
+        thumbnailsSm += `<div class="col-sm-6">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`;
+        
+        thumbnailsMd += `<div class="col-md-3">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`;
+
+        thumbnailsLg += `<div class="col-lg-2">
+                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
+                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
+                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <div class="panel-footer">
+                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                              </div>
+                            </div>
+                          </a>
+                        </div>`;
+      }
+    }
+
+    $('#fila-xs').html(thumbnailsXs);
+    $('#fila-sm').html(thumbnailsSm);
+    $('#fila-md').html(thumbnailsMd);
+    $('#fila-lg').html(thumbnailsLg);
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+}
+
+
+function abrirModalProducto(idBatida) {
   let tabla = $(`#tabla-subProductos`).DataTable({
     destroy: true,
     "lengthChange": false,
@@ -33,24 +175,50 @@ function abrirModalProducto(idProducto) {
   });
   $('#modalProducto').modal('show');
 
-  let rutaSubProductos = db.ref(`subProductos/${idProducto}`);
+  let rutaSubProductos = db.ref(`batidas/${idBatida}`);
   rutaSubProductos.once('value', function(snap) {
-    let subProductos = snap.val();
-    let filas = "";
+    let claveProducto = snap.val().claveProducto;
+    let nombreProducto = snap.val().nombreProducto;
+    let kilos = snap.val().kilos;
+    let piezas = snap.val().piezas;
+    let costo = snap.val().costo;
+    let subProductos = snap.val().subProductos;
+
+    $('#claveProducto').val(claveProducto);
+    $('#nombreProducto').val(nombreProducto);
+    $('#costo').val(costo);
+    $('#kilos').val(kilos);
+    $('#piezas').val(piezas);
+
+    //let filas = "";
     tabla.clear();
 
     for(let subProducto in subProductos) {
-      filas += `<tr>
-                  <td>${subProducto}</td>
-                  <td>${subProductos[subProducto].nombre}</td>
-                  <td>${subProductos[subProducto].valorConstante}</td>
-                  <td>${subProductos[subProducto].precio}</td>
-                  <td>${(subProductos[subProducto].valorConstante * subProductos[subProducto].precio).toFixed(4)}</td<
-               </tr>`;
+      let rutaSubProducto = db.ref(`subProductos/${subProducto}`);
+      rutaSubProducto.once('value', function(datos) {
+        if(datos.hasChildren()) {
+          let precio = datos.val().precio;
+
+          let fila = `<tr>
+                      <td>${subProducto}</td>
+                      <td>${subProductos[subProducto].nombre}</td>
+                      <td>${subProductos[subProducto].valorConstante}</td>
+                      <td>${precio}</td>
+                      <td>${(subProductos[subProducto].valorConstante * precio).toFixed(4)}</td>
+                    </tr>`;
+
+          tabla.rows.add($(fila))
+        }
+      });
+      
     }
-    tabla.rows.add($(filas)).columns.adjust().draw();
+    tabla.columns.adjust().draw();
   })
 }
+
+$('#modalProducto').on('shown.bs.modal', function() {
+  $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+});
 
 function haySesion() {
   auth.onAuthStateChanged(function (user) {
@@ -127,6 +295,8 @@ $('#campana').click(function() {
 
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
+
+  $('#fecha').val(moment().format('YYYY-MM-DD'));
 
   mostrarProductos();
 
