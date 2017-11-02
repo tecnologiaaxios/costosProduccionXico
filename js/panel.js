@@ -184,11 +184,17 @@ function abrirModalProducto(idBatida) {
     let costo = snap.val().costo;
     let subProductos = snap.val().subProductos;
 
-    $('#claveProducto').val(claveProducto);
-    $('#nombreProducto').val(nombreProducto);
-    $('#costo').val(costo);
-    $('#kilos').val(kilos);
-    $('#piezas').val(piezas);
+    $('#claveProductoLg').val(claveProducto);
+    $('#nombreProductoLg').val(nombreProducto);
+    $('#costoLg').val(costo);
+    $('#kilosLg').val(kilos);
+    $('#piezasLg').val(piezas);
+
+    $('#claveProductoMd').val(claveProducto);
+    $('#nombreProductoMd').val(nombreProducto);
+    $('#costoMd').val(costo);
+    $('#kilosMd').val(kilos);
+    $('#piezasMd').val(piezas);
 
     //let filas = "";
     tabla.clear();
