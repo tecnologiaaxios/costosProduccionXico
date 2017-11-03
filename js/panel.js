@@ -97,12 +97,14 @@ function filtrarPorFecha() {
     for(let producto in productos) {
       let finalizada = (productos[producto].estado === "Finalizada") ? true : false;
 
+      
+
       if(finalizada) {
         thumbnailsXs += `<div class="col-xs-12">
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
                             <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
                               <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
                               <div class="panel-footer">
                                 <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
                                 <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
@@ -115,7 +117,7 @@ function filtrarPorFecha() {
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
                             <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
                               <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
                               <div class="panel-footer">
                                 <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
                                 <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
@@ -128,7 +130,7 @@ function filtrarPorFecha() {
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
                             <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
                               <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
                               <div class="panel-footer">
                                 <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
                                 <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
@@ -141,7 +143,7 @@ function filtrarPorFecha() {
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
                             <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
                               <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/1JAMON DE PAVO.jpg" style="height: 200px;">
+                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
                               <div class="panel-footer">
                                 <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
                                 <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
