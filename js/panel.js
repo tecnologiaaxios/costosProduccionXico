@@ -186,6 +186,7 @@ function abrirModalProducto(idBatida) {
     let costo = snap.val().costo;
     let subProductos = snap.val().subProductos;
 
+    $('#img-producto').attr('src', `img/${claveProducto}.jpg`);
     $('#claveProducto').val(claveProducto);
     $('#nombreProducto').val(nombreProducto);
     $('#costo').val(costo);
