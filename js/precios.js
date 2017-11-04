@@ -102,7 +102,7 @@ function mostrarSubProductos() {
                   <td>${subProductos[subProducto].nombre}</td>
                   <td class="text-center">
                     <div class="input-group input-group-sm">
-                      <span class="input-group-addon">$</span>
+                      <span class="input-group-addon">${(subProductos[subProducto].moneda == "PESO" || subProductos[subProducto].moneda == "DOLAR") ? "$" : "&#8364;" }</span>
                       <input id="precio-${subProducto}" readonly type="number" class="form-control" value="${subProductos[subProducto].precio}">
                       <span class="input-group-btn">
                         <button onclick="habilitarEdicion('precio-${subProducto}')" class="btn btn-warning" type="button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
@@ -112,6 +112,7 @@ function mostrarSubProductos() {
                       </span>
                     </div>     
                   </td>
+                  <td>${subProductos[subProducto].precioPesos}</td>
                 </tr>`;
     }
   
