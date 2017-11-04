@@ -65,6 +65,8 @@ $('#btnModalGuardar').click(function(){
       $('#euro').parent().parent().removeClass('has-error');
       $('#helpBlockEuro').addClass('hidden');
     }
+
+    $('#tabla-tipoCambio').columns.adjust();
   }
 });
 
