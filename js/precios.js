@@ -87,7 +87,14 @@ function mostrarSubProductos() {
     "language": {
       "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
     },
-    "ordering": false
+    "ordering": false,
+    "columns": [
+      null,
+      { "width": "35%" },
+      null,
+      null,
+      null
+    ]
   });
   
   let rutaSubProductos = db.ref('subProductos');
@@ -100,6 +107,18 @@ function mostrarSubProductos() {
       filas += `<tr>
                   <td>${subProducto}</td>
                   <td>${subProductos[subProducto].nombre}</td>
+                  <td class="text-center">
+                    <div class="input-group input-group-sm">
+                      <select class="form-control" id="moneda-${subProducto}">
+                        <option ${(subProductos[subProducto].moneda == "PESO") ? "selected" : "" } value="PESO">Peso</option>
+                        <option ${(subProductos[subProducto].moneda == "DOLAR") ? "selected" : "" } value="DOLAR">Dolar</option>
+                        <option ${(subProductos[subProducto].moneda == "EURO") ? "selected" : "" } value="EURO">Euro</option>
+                      </select>
+                      <span class="input-group-btn">
+                        <button onclick="cambiarMoneda('${subProducto}', 'moneda-${subProducto}')" class="btn btn-info">Cambiar</button>
+                      </span>
+                    </div>
+                  </td>
                   <td class="text-center">
                     <div class="input-group input-group-sm">
                       <span class="input-group-addon">${(subProductos[subProducto].moneda == "PESO" || subProductos[subProducto].moneda == "DOLAR") ? "$" : "&#8364;" }</span>
@@ -120,6 +139,15 @@ function mostrarSubProductos() {
   });
 }
 
+function cambiarMoneda(claveSubProducto, idSelect) {
+  let moneda = $(`#${idSelect}`).val();
+  let subProducto = db.ref(`subProductos/${claveSubProducto}`);
+  subProducto.update({
+    moneda: moneda
+  });
+  $.toaster({priority: 'info', title: 'Info:', message: `La moneda del subProducto ${claveSubProducto} se actualizó`});
+}
+
 function habilitarEdicion(idInput) {
   $(`#${idInput}`).attr('readonly', false);
 }
@@ -137,6 +165,7 @@ function guardarPrecio(claveSubProducto, idInput) {
         precio: precio,
         precioPesos: precio
       });
+      $.toaster({priority: 'info', title: 'Info:', message: `Se actualizó el precio del subProducto ${claveSubProducto}`});
     }
     else if(moneda == "DOLAR") {
       rutaSubProducto.limitToLast(1).once('value', function(snapshot) {
@@ -147,6 +176,7 @@ function guardarPrecio(claveSubProducto, idInput) {
           precio: precio,
           precioPesos: precioDolar
         });
+        $.toaster({priority: 'info', title: 'Info:', message: `Se actualizó el precio del subProducto ${claveSubProducto}`});
       });
     }
     else if(moneda == "EURO") { 
@@ -158,6 +188,7 @@ function guardarPrecio(claveSubProducto, idInput) {
           precio: precio,
           precioPesos: precioEuro
         });
+        $.toaster({priority: 'info', title: 'Info:', message: `Se actualizó el precio del subProducto ${claveSubProducto}`});
       });
     }
   });
