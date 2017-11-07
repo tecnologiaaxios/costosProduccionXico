@@ -90,21 +90,9 @@
         <img class="navbar-brand" id="logo" src="logo.png"></img>
         <ul style="margin-top:50px; list-style:none; font-size:50px; color:white; padding:28px;">
           <li>
-            <a style="color:white; text-decoration: none;" href="precios.html">
-              <span style="font-size:50px;" class="material-icons no-padding">attach_money</span>
-              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-15px;">Ir a los precios</p>
-            </a>
-          </li>
-          <li>
-            <a style="color:white; text-decoration: none;" href="tiposCambio.html">
-              <span style="font-size:50px;" class="fa fa-money"></span>
-              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-15px;">Tipos de cambio</p>
-            </a>
-          </li>
-          <li>
-            <a style="color:white; text-decoration: none;" href="filtrar.html">
-              <span style="font-size:50px;" class="fa fa-filter"></span>
-              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-15px;">Ver producción</p>
+            <a style="color:white; text-decoration: none;" href="panel.html">
+              <span style="font-size:50px;" class="fa fa-arrow-left"></span>
+              <p style="white; font-size:11px; width:200px; margin-left:-14px; margin-top:-10px;">Volver al panel</p>
             </a>
           </li>
         </ul>
@@ -112,29 +100,22 @@
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="page-header">Tablero de costos</h1>
+            <h1 class="page-header">Tablero de producción</h1>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
-            <div class="form-inline">
-              <div class="form-group">
-                <span class="glyphicon glyphicon-filter"></span><span>Filtrar por:</span>
-              </div>
-              <div class="form-group">
-                <select class="form-control" name="categoria" id="categoria">
-                  
-                </select>
-              </div>
-              <div class="form-group">
-                <select class="form-control" name="producto" id="producto">
-                  
-                </select>
-              </div>
-              <button class="btn btn-success" type="button" onclick="mostrarProductos()">Mostrar todos</button>
+          <div class="col-md-4 col-sm-4 col-lg-2">
+            <div class="form-group">
+              <label for="">Filtrar por fecha:</label>
+              <div class="input-group">
+                  <input id="fecha" class="form-control" type="date">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" onclick="filtrarPorFecha()" data-toggle="tooltip" data-placement="bottom" title="Filtrar"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                  </span>
+                </div>
             </div>
           </div>
-        </div><br>
+        </div>
         <div id="fila-xs" class="row visible-xs">
           
         </div>
@@ -267,7 +248,6 @@
     </script>
     <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/$VERSION/dragula.min.js'></script>-->
     <script src="js/moment-with-locales.js"></script>
-    <script src="js/busqueda.js"></script>
-    <script src="js/panel.js"></script>
+    <script src="js/filtrar.js"></script>
   </body>
 </html>

@@ -6,152 +6,71 @@ function logout() {
 }
 
 function mostrarProductos() {
-  let fecha = moment().format('DD/MM/YYYY');
-
-  let rutaBatidas = db.ref('batidas');
-  rutaBatidas.orderByChild('fechaCaptura').equalTo(fecha).on('value', function(datos) {
+  let costos = db.ref('costosProduccion');
+  costos.on('value', function(datos) {
     let productos = datos.val();
     let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
 
     for(let producto in productos) {
-      let finalizada = (productos[producto].estado === "Finalizada") ? true : false;
-
-      if(finalizada) {
-        thumbnailsXs += `<div class="col-xs-12">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
+      thumbnailsXs += `<div class="col-xs-12">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
                             </div>
-                          </a>
-                        </div>`; 
-
-        thumbnailsSm += `<div class="col-sm-6">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
                             </div>
-                          </a>
-                        </div>`;
-        
-        thumbnailsMd += `<div class="col-md-3">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
+                          </div>
+                        </a>
+                      </div>`;
+
+      thumbnailsSm += `<div class="col-sm-6">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
                             </div>
-                          </a>
-                        </div>`;
-
-        thumbnailsLg += `<div class="col-lg-2">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
                             </div>
-                          </a>
-                        </div>`;
-      }
-    }
+                          </div>
+                        </a>
+                      </div>`;
 
-    $('#fila-xs').html(thumbnailsXs);
-    $('#fila-sm').html(thumbnailsSm);
-    $('#fila-md').html(thumbnailsMd);
-    $('#fila-lg').html(thumbnailsLg);
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-}
-
-function filtrarPorFecha() {
-  let fechaString = $('#fecha').val();
-  var date = fechaString.split("-");
-  let dia = date[2];
-  let mes = date[1];
-  let año = date[0];
-
-  let dateObj = new Date(`${mes}/${dia}/${año}`);
-  let fecha = moment(dateObj).format('DD/MM/YYYY');
-
-  let rutaBatidas = db.ref('batidas');
-  rutaBatidas.orderByChild('fechaCaptura').equalTo(fecha).once('value', function(snap) {
-    let productos = snap.val();
-    let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
-
-    for(let producto in productos) {
-      let finalizada = (productos[producto].estado === "Finalizada") ? true : false;
-
-      
-
-      if(finalizada) {
-        thumbnailsXs += `<div class="col-xs-12">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
+      thumbnailsMd += `<div class="col-md-3">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
                             </div>
-                          </a>
-                        </div>`; 
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;
 
-        thumbnailsSm += `<div class="col-sm-6">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
+      thumbnailsLg += `<div class="col-lg-2">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
                             </div>
-                          </a>
-                        </div>`;
-        
-        thumbnailsMd += `<div class="col-md-3">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
                             </div>
-                          </a>
-                        </div>`;
-
-        thumbnailsLg += `<div class="col-lg-2">
-                          <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
-                            <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
-                              <h3 class="text-center">${productos[producto].claveProducto}</h3>
-                              <img src="img/${productos[producto].claveProducto}.jpg" style="height: 200px;">
-                              <div class="panel-footer">
-                                <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
-                                <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
-                              </div>
-                            </div>
-                          </a>
-                        </div>`;
-      }
+                          </div>
+                        </a>
+                      </div>`;   
     }
 
     $('#fila-xs').html(thumbnailsXs);
@@ -161,10 +80,10 @@ function filtrarPorFecha() {
     $('[data-toggle="tooltip"]').tooltip();
   });
 
+  
 }
 
-
-function abrirModalProducto(idBatida) {
+function abrirModalProducto(claveProducto) {
   let tabla = $(`#tabla-subProductos`).DataTable({
     destroy: true,
     "lengthChange": false,
@@ -177,10 +96,9 @@ function abrirModalProducto(idBatida) {
   });
   $('#modalProducto').modal('show');
 
-  let rutaSubProductos = db.ref(`batidas/${idBatida}`);
-  rutaSubProductos.once('value', function(snap) {
-    let claveProducto = snap.val().claveProducto;
-    let nombreProducto = snap.val().nombreProducto;
+  let costosProduccion = db.ref(`costosProduccion/${claveProducto}`);
+  costosProduccion.once('value', function(snap) {
+    let nombreProducto = snap.val().nombre;
     let kilos = snap.val().kilos;
     let piezas = snap.val().piezas;
     let costo = snap.val().costo;
@@ -214,9 +132,9 @@ function abrirModalProducto(idBatida) {
           tabla.columns.adjust().draw();
         }
       });
-      
+
     }
-    
+
   })
 }
 
@@ -297,12 +215,198 @@ $('#campana').click(function() {
   verNotificaciones();
 });
 
+function llenarSelectCategorias() {
+  let rutaCategorias = db.ref('categoriasPT');
+  rutaCategorias.on('value', function(snap) {
+    let categorias = snap.val();
+    let options = '<option selected disabled value="">Categoría</option>';
+
+    for(let i in categorias) {
+      options += `<option value="${categorias[i].nombre}">${categorias[i].nombre}</option>`;
+    }
+
+    $('#categoria').html(options);
+  });
+}
+
+$('#categoria').change(function() {
+  let categoria = $(this).val();
+
+  let costos = db.ref('costosProduccion');
+  costos.orderByChild('categoria').equalTo(categoria).on('value', function(datos) {
+    let productos = datos.val();
+    let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
+
+    for(let producto in productos) {
+      thumbnailsXs += `<div class="col-xs-12">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
+                            </div>
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;
+
+      thumbnailsSm += `<div class="col-sm-6">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
+                            </div>
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;
+
+      thumbnailsMd += `<div class="col-md-3">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
+                            </div>
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;
+
+      thumbnailsLg += `<div class="col-lg-2">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${producto}</h3>
+                            </div>
+                            <img src="img/${producto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;   
+    }
+
+    $('#fila-xs').html(thumbnailsXs);
+    $('#fila-sm').html(thumbnailsSm);
+    $('#fila-md').html(thumbnailsMd);
+    $('#fila-lg').html(thumbnailsLg);
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+});
+
+$('#producto').change(function() {
+  let claveProducto = $(this).val();
+
+  let costos = db.ref(`costosProduccion/${claveProducto}`);
+  costos.on('value', function(datos) {
+    let producto = datos.val();
+    let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
+
+    
+      thumbnailsXs += `<div class="col-xs-12">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${claveProducto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${producto.nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${claveProducto}</h3>
+                            </div>
+                            <img src="img/${claveProducto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${producto.kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${producto.costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;
+
+      thumbnailsSm += `<div class="col-sm-6">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${claveProducto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${producto.nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${claveProducto}</h3>
+                            </div>
+                            <img src="img/${claveProducto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${producto.kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${producto.costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;
+
+      thumbnailsMd += `<div class="col-md-3">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${claveProducto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${producto.nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${claveProducto}</h3>
+                            </div>
+                            <img src="img/${claveProducto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${producto.kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${producto.costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;
+
+      thumbnailsLg += `<div class="col-lg-2">
+                        <a class="thumbnail-a" onclick="abrirModalProducto('${claveProducto}')">
+                          <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${producto.nombre}">
+                            <div class="panel-heading">
+                              <h3 class="text-center">${claveProducto}</h3>
+                            </div>
+                            <img src="img/${claveProducto}.jpg" style="height: 200px;">
+                            <div class="panel-footer">
+                              <h4 class="text-center">Peso: ${producto.kilos} Kg</h4>
+                              <h4 class="text-center">Costo: $ ${producto.costo}</h4>
+                            </div>
+                          </div>
+                        </a>
+                      </div>`;   
+    
+
+    $('#fila-xs').html(thumbnailsXs);
+    $('#fila-sm').html(thumbnailsSm);
+    $('#fila-md').html(thumbnailsMd);
+    $('#fila-lg').html(thumbnailsLg);
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+});
+
+
+function llenarSelectProductos() {
+  let rutaCostosProduccion = db.ref('costosProduccion');
+  rutaCostosProduccion.on('value', function(snap) {
+    let productos = snap.val();
+    let options = '<option selected disabled value="">Producto</option>';
+
+    for(let producto in productos) {
+      options += `<option value="${producto}">${producto} - ${productos[producto].nombre}</option>`;
+    }
+    $('#producto').html(options);
+  });
+}
+
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   $('#fecha').val(moment().format('YYYY-MM-DD'));
 
   mostrarProductos();
+  llenarSelectCategorias();
+  llenarSelectProductos();
 
   $.toaster({
     settings: {
