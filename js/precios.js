@@ -160,7 +160,8 @@ function guardarPrecio(claveSubProducto, idInput) {
     let moneda = snap.val().moneda;
     let rutaTipoCambio = db.ref('tipoCambio'); 
 
-    if(moneda == "PESOS") {
+    if(moneda == "PESO") {
+      console.log("PESO");
       rutaSubProducto.update({
         precio: precio,
         precioPesos: precio
@@ -168,9 +169,12 @@ function guardarPrecio(claveSubProducto, idInput) {
       $.toaster({priority: 'info', title: 'Info:', message: `Se actualizó el precio del subProducto ${claveSubProducto}`});
     }
     else if(moneda == "DOLAR") {
-      rutaSubProducto.limitToLast(1).once('value', function(snapshot) {
-        let dolar = snapshot.val().dolar;
-        let precioDolar = Number((precio * dolar).toFixed(4));
+      rutaTipoCambio.once('value').then(function(snapshot) {
+        let tiposCambio = snapshot.val();
+        let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
+        let ultimo = tiposCambio[claveUltimo];
+        let dolar = ultimo.dolar
+        let precioDolar = Number((precio * ultimo.dolar).toFixed(4));
 
         rutaSubProducto.update({
           precio: precio,
@@ -180,8 +184,12 @@ function guardarPrecio(claveSubProducto, idInput) {
       });
     }
     else if(moneda == "EURO") { 
-      rutaSubProducto.limitToLast(1).once('value', function(snapshot) {
-        let euro = snapshot.val().euro;
+      console.log("EURO");
+      rutaTipoCambio.once('value', function(snapshot) {
+        let tiposCambio = snap.val();
+        let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
+        let ultimo = tiposCambio[claveUltimo];
+        let euro = ultimo.euro;
         let precioEuro = Number((precio * euro).toFixed(4));
       
         rutaSubProducto.update({
