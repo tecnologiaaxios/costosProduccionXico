@@ -197,20 +197,29 @@
                     <input id="piezas" name="piezas" type="text" class="form-control" readonly>
                   </div>
                 </div>
+                <a id="verSubProductos" role="button" data-toggle="collapse" href="#collapseSubProductos" aria-expanded="false" aria-controls="collapseSubProductos">
+                  Ver sub productos
+                </a>
               </div>
             </form>
-            <table id="tabla-subProductos" class="table table-hover table-bordered table-striped table-condensed">
-              <thead>
-                <th>Clave</th>
-                <th>Nombre</th>
-                <th>Valor Constante</th>
-                <th>Precio</th>
-                <th>Importe</th>
-              </thead>
-              <tbody>
+            <div class="collapse" id="collapseSubProductos">
+              <div class="panel panel-default">
+                <div class="panel-body">         
+                  <table id="tabla-subProductos" class="table table-hover table-bordered table-striped table-condensed">
+                    <thead>
+                      <th>Clave</th>
+                      <th>Nombre</th>
+                      <th>Valor Constante</th>
+                      <th>Precio</th>
+                      <th>Importe</th>
+                    </thead>
+                    <tbody>
 
-              </tbody>
-            </table>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>-->

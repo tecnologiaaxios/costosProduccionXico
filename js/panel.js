@@ -79,8 +79,6 @@ function mostrarProductos() {
     $('#fila-lg').html(thumbnailsLg);
     $('[data-toggle="tooltip"]').tooltip();
   });
-
-  
 }
 
 function abrirModalProducto(claveProducto) {
@@ -141,6 +139,18 @@ function abrirModalProducto(claveProducto) {
 $('#modalProducto').on('shown.bs.modal', function() {
   $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
 });
+
+$('#collapseSubProductos').on('shown.bs.collapse', function () {
+  $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+})
+
+$('#collapseSubProductos').on('show.bs.collapse', function () {
+  $('#verSubProductos').text('Ocultar sub productos');
+})
+
+$('#collapseSubProductos').on('hide.bs.collapse', function () {
+  $('#verSubProductos').text('Ver sub productos');
+})
 
 function haySesion() {
   auth.onAuthStateChanged(function (user) {
