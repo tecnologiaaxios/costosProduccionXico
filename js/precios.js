@@ -205,6 +205,44 @@ function guardarPrecio(claveSubProducto, idInput) {
   $(`#${idInput}`).attr('readonly', true);
 }
 
+function actualizarPrecioPesos() {
+  let rutaTiposCambio = db.ref('tipoCambio');
+  rutaTiposCambio.on('value', function(snap) {
+    let tiposCambio = snap.val();
+    let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
+    let ultimo = tiposCambio[claveUltimo];
+    let dolar = ultimo.dolar;
+    let euro = ultimo.euro;
+    
+    let rutaSubProductos = db.ref('subProductos'); 
+    rutaSubProductos.once('value', function(snapshot) {
+      let subProductos = snapshot.val();
+  
+      for(let subProducto in subProductos) {
+        let precio = subProductos[subProducto].precio;
+        let moneda = subProductos[subProducto].moneda;
+        let rutaSubProducto = db.ref(`subProductos/${subProducto}`);
+
+        if(moneda == "DOLAR") {
+          let precioPesos = precio * dolar;
+          
+          rutaSubProducto.update({
+            precioPesos: precioPesos
+          });
+        }
+        else if(moneda == "EURO") {
+          let precioPesos = precio * euro;
+          rutaSubProducto.update({
+            precioPesos: precioPesos
+          });
+        }
+      }
+    });
+  });
+}
+
+actualizarPrecioPesos();
+
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
