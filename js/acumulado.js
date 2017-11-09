@@ -12,7 +12,7 @@ $('#tipoAcumulado').change(function() {
     $('#fechaFin').attr('readonly', true);
     $('#fechaInicio').val('');
     $('#fechaFin').val('');
-    //$(`#tabla-acumulado tbody`).html('');
+    
     
     $('#costoTotal').text('');
     calcularCostoTotal();
@@ -20,7 +20,7 @@ $('#tipoAcumulado').change(function() {
   if(tipo == "CostoRango") {
     $('#fechaInicio').attr('readonly', false);
     $('#fechaFin').attr('readonly', false);
-    //$(`#tabla-acumulado tbody`).html('');
+    
     let tabla = $(`#tabla-acumulado`).DataTable({
       destroy: true,
       "lengthChange": false,
@@ -123,9 +123,6 @@ function costoRango(fechaInicio, fechaFin) {
                     <td>$ ${batidas[batida].kilos * batidas[batida].costo}</td>
                   </tr>`;
         costoTotal += (batidas[batida].kilos * batidas[batida].costo);
-        
-
-        
       }
     }
     tabla.rows.add($(filas)).columns.adjust().draw(); 
