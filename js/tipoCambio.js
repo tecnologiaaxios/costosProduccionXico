@@ -184,6 +184,7 @@ $('#campana').click(function() {
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
   mostrarTipoCambio();
+  $('#dolar').focus();
   
   $('#fecha').val(moment().format('YYYY-MM-DD'));
   

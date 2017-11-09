@@ -34,7 +34,6 @@
     <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="css/bootstrap-datepicker3.standalone.css">
     <link rel="stylesheet" href="css/table-scrollable.css">
-    <link rel="stylesheet" href="css/c3.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -57,19 +56,19 @@
         </div>
         <!-- /.navbar-header -->
         <ul class="nav navbar-top-links navbar-right no-padding ">
-          <!--<li id="campana" onclick="mostrarNotificaciones()" class="dropdown no-padding">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">-->
+          <li id="campana" onclick="mostrarNotificaciones()" class="dropdown no-padding">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <!--<i class="fa fa-bell fa-fw"></i>-->
-              <!--<i class="fa fa-bell-o" style="font-size: 25px;" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Notificaciones"></i>
+              <i class="fa fa-bell-o" style="font-size: 25px;" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Notificaciones"></i>
               <span id="spanNotificaciones" style="background-color: red; display: none;" class="badge"></span>
               <i class="fa fa-caret-down"></i>
             </a>
-            <ul id="contenedorNotificaciones" class="dropdown-menu dropdown-alerts">-->
+            <ul id="contenedorNotificaciones" class="dropdown-menu dropdown-alerts">
               <!--Notificaciones aquí-->
-            <!--</ul>-->
+            </ul>
             <!--<div id="spanNotificaciones" style="display:none; background-color:red; color:white; border-radius:5px; padding:10%;  font-size:10px; font-family: intelo-bold; transform:translate(10px, -22px);"></div>-->
-          <!--</li>
-          <li><img src="http://lorempixel.com/40/40/" alt="..." class="img-circle"> </li>-->
+          </li>
+          <li><img src="http://lorempixel.com/40/40/" alt="..." class="img-circle"> </li>
           <li class="dropdown no-padding">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="fa fa-cog rotateMe" style="font-size: 25px;" aria-hidden="true"></i>
@@ -101,52 +100,42 @@
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="page-header">Tablero de tipos de cambio</h1>
+            <h1 class="page-header">Acumulado</h1>
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-6 col-md-6">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                Nuevo tipo de cambio
-              </div>
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="tipoAcumulado">Opciones:</label>
+              <select class="selectpicker" name="tipoAcumulado" id="tipoAcumulado" title="Seleccionar">
+                <option value="CostoTotal">Costo acumulado total</option>
+                <!--<option value="CostoMes">Costo por mes *</option>-->
+                <option value="CostoRango">Costo rango</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fechaInicio">Desde:</label>
+              <input id="fechaInicio" name="fechaInicio" type="date" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+              <label for="fechaFin">Hasta:</label>
+              <input id="fechaFin" name="fechaFin" type="date" class="form-control" readonly>
+            </div>
+            <button id="btnBuscar" type="button" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+          </form>
+        </div><br>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="panel panel-default">
               <div class="panel-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" class="form-control" name="fecha" id="fecha" placeholder="" readonly>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="dolar">Dólar:</label>
-                        <div class="input-group">
-                          <span class="input-group-addon" id="basic-addon1">$</span>
-                          <input step="any" type="number" name="dolar" id="dolar" class="form-control">
-                        </div>
-                        <span id="helpBlockDolar" class="hidden help-block">Campo obligatorio</span>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="euro">Euro:</label>
-                        <div class="input-group">
-                          <span class="input-group-addon" id="basic-addon1">&#8364;</span>
-                          <input step="any" type="number" name="euro" id="euro" class="form-control">
-                        </div>
-                        <span id="helpBlockEuro" class="hidden help-block">Campo obligatorio</span>
-                      </div>
-                    </div>
-                  </div>
-                  <button id="btnModalGuardar" type="button" class="btn btn-success pull-right">Guardar</button>
-                </form><br><br><br>
-                <table id="tabla-tipoCambio"class="table table-bordered table-striped table-hover table-condensed">
+                <table id="tabla-acumulado" class="table table-bordered table-striped table-hover table-condensed">
                   <thead>
+                    <th>Clave Batida</th>
+                    <th>Clave Producto</th>
                     <th>Fecha</th>
-                    <th>Dólar</th>
-                    <th>Euro</th>
+                    <th>Kilos</th>
+                    <th>Costo por Kg</th>
+                    <th>Costo Batida</th>
                   </thead>
                   <tbody>
 
@@ -156,29 +145,19 @@
             </div>
           </div>
         </div>
-      </div><!-- /#page-wrapper -->
-    </div><!-- /#wrapper -->    
-    
-    <div id="modalConfirmarGuardar"class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Guardar Tipo de Cambio</h4>
-            </div>
-            <div class="modal-body">
-              <p>¿Está usted seguro de registrar este Tipo de Cambio?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-              <button id="btnGuardar" type="button" onclick="registrarTipoCambio()" data-dismiss="modal" class="btn btn-primary">Si</button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->    
-
-
-
+        <div class="row">
+          <div class="col-md-4 col-md-offset-5">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label style="font-size: 25px;" class="col-md-6 control-label">Costo Total:</label>
+                <div class="col-md-4">
+                  <p id="costoTotal" style="font-size: 25px;" class="form-control-static"></p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     <!-- jQuery -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script> -->
     <script src="js/jquery-3.2.1.min.js"></script>
@@ -197,9 +176,9 @@
     <script src="dist/js/bootstrap-select.js"></script>
     <script src="vendor/metisMenu/metisMenu.min.js"></script>
     <!-- Morris Charts JavaScript -->
-    <!--<script src="vendor/raphael/raphael.min.js"></script>
+    <script src="vendor/raphael/raphael.min.js"></script>
     <script src="vendor/morrisjs/morris.min.js"></script>
-    <script src="data/morris-data.js"></script>-->
+    <script src="data/morris-data.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
     <!-- DataTables JavaScript -->
@@ -213,8 +192,6 @@
     <script src="js/jquery.toaster.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     <script src="js/mindmup-editabletable.js"></script>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
-    <script src="js/c3.js"></script>
     <!--<script src="js/jspdf.debug.js"></script>-->
     <script>
       // Initialize Firebase
@@ -230,6 +207,8 @@
     </script>
     <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/$VERSION/dragula.min.js'></script>-->
     <script src="js/moment-with-locales.js"></script>
-    <script src="js/tipoCambio.js"></script>
+    <script src="js/moment-range.js"></script>
+    <script src="js/busqueda.js"></script>
+    <script src="js/acumulado.js"></script>
   </body>
 </html>
