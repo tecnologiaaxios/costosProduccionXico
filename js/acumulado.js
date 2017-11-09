@@ -112,8 +112,7 @@ function costoRango(fechaInicio, fechaFin) {
       let dateBatida = new Date(`${date[1]}/${date[0]}/${date[2]}`);
       //let rango = moment.range(fechaDesde, fechaHasta);
       
-      if(dateBatida >= fechaDesde && dateBatida <= fechaHasta){
-
+      if(dateBatida >= fechaDesde && dateBatida <= fechaHasta) {
         filas += `<tr>
                     <td>${batidas[batida].claveBatida}</td>
                     <td>${batidas[batida].claveProducto}</td>
@@ -129,7 +128,6 @@ function costoRango(fechaInicio, fechaFin) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     $('#costoTotal').text(`$ ${costoTotal}`);
   });
-  
 }
 
 function haySesion() {
