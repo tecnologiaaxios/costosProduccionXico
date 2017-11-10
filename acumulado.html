@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link href='logo.ico' rel='shortcut icon' type='image/x-icon'/>
 
-    <title>Recepción de pedidos</title>
+    <title>Tablero de costo acumulado</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -56,19 +56,18 @@
         </div>
         <!-- /.navbar-header -->
         <ul class="nav navbar-top-links navbar-right no-padding ">
-          <li id="campana" onclick="mostrarNotificaciones()" class="dropdown no-padding">
+          <!--<li id="campana" onclick="mostrarNotificaciones()" class="dropdown no-padding">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <!--<i class="fa fa-bell fa-fw"></i>-->
               <i class="fa fa-bell-o" style="font-size: 25px;" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Notificaciones"></i>
               <span id="spanNotificaciones" style="background-color: red; display: none;" class="badge"></span>
               <i class="fa fa-caret-down"></i>
             </a>
             <ul id="contenedorNotificaciones" class="dropdown-menu dropdown-alerts">
-              <!--Notificaciones aquí-->
+
             </ul>
-            <!--<div id="spanNotificaciones" style="display:none; background-color:red; color:white; border-radius:5px; padding:10%;  font-size:10px; font-family: intelo-bold; transform:translate(10px, -22px);"></div>-->
+            <div id="spanNotificaciones" style="display:none; background-color:red; color:white; border-radius:5px; padding:10%;  font-size:10px; font-family: intelo-bold; transform:translate(10px, -22px);"></div>
           </li>
-          <li><img src="http://lorempixel.com/40/40/" alt="..." class="img-circle"> </li>
+          <li><img src="http://lorempixel.com/40/40/" alt="..." class="img-circle"> </li>-->
           <li class="dropdown no-padding">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="fa fa-cog rotateMe" style="font-size: 25px;" aria-hidden="true"></i>
@@ -107,10 +106,11 @@
           <form class="form-inline">
             <div class="form-group">
               <label for="tipoAcumulado">Opciones:</label>
-              <select class="selectpicker" name="tipoAcumulado" id="tipoAcumulado" title="Seleccionar">
+              <select class="form-control" name="tipoAcumulado" id="tipoAcumulado">
+                <option selected disabled value="">Seleccionar</option>
                 <option value="CostoTotal">Costo acumulado total</option>
                 <!--<option value="CostoMes">Costo por mes *</option>-->
-                <option value="CostoRango">Costo rango</option>
+                <option value="CostoRango">Costo por rango</option>
               </select>
             </div>
             <div class="form-group">
@@ -159,8 +159,8 @@
         </div>
       </div>
     <!-- jQuery -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script> -->
-    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
+    <!-- <script src="js/jquery-3.2.1.min.js"></script> -->
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>window.$ = window.jQuery = require('jquery');</script>-->
     <!-- If the require doesn't work, include first the jQuery file
