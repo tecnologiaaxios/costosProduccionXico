@@ -27,7 +27,7 @@ $('#tipoAcumulado').change(function() {
       "scrollY": "300px",
       "scrollCollapse": true,
       "language": {
-        "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
+        "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
       },
       "ordering": false
     });
@@ -43,7 +43,7 @@ function calcularCostoTotal() {
     "scrollY": "300px",
     "scrollCollapse": true,
     "language": {
-      "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
+      "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
     },
     "ordering": false
   });
@@ -93,7 +93,7 @@ function costoRango(fechaInicio, fechaFin) {
     "scrollY": "300px",
     "scrollCollapse": true,
     "language": {
-      "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
+      "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
     },
     "ordering": false
   });
@@ -212,7 +212,7 @@ $(document).ready(function() {
     "scrollY": "300px",
     "scrollCollapse": true,
     "language": {
-      "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
+      "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
     },
     "ordering": false
   });

@@ -207,6 +207,8 @@ function abrirModalProducto(idBatida) {
     let piezas = snap.val().piezas;
     let costo = snap.val().costo;
     let subProductos = snap.val().subProductos;
+    let fechaCaptura = snap.val().fechaCaptura;
+    let fechaFinalizada = snap.val().fechaFinalizada;
 
     $('#img-producto').attr('src', `img/${claveProducto}.jpg`);
     $('#claveProducto').val(claveProducto);
@@ -214,6 +216,8 @@ function abrirModalProducto(idBatida) {
     $('#costo').val(costo);
     $('#kilos').val(kilos);
     $('#piezas').val(piezas);
+    $('#fechaCaptura').val(fechaCaptura);
+    $('#fechaFinalizada').val(fechaFinalizada);
 
     //let filas = "";
     tabla.clear();

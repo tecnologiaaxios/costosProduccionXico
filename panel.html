@@ -127,12 +127,12 @@
               </div>
               <div class="form-group">
                 <select class="form-control" name="categoria" id="categoria">
-                  
+
                 </select>
               </div>
               <div class="form-group">
                 <select class="form-control" name="producto" id="producto">
-                  
+
                 </select>
               </div>
               <button class="btn btn-success" type="button" onclick="mostrarProductos()">Mostrar todos</button>
@@ -140,16 +140,16 @@
           </div>
         </div><br>
         <div id="fila-xs" class="row visible-xs">
-          
+
         </div>
         <div id="fila-sm" class="row visible-sm">
-          
+
         </div>
         <div id="fila-md" class="row visible-md">
-          
+
         </div>
         <div id="fila-lg" class="row visible-lg">
-          
+
         </div>
       </div><!-- /#page-wrapper -->
     </div><!-- /#wrapper -->
@@ -165,7 +165,7 @@
               <div class="row">
                 <div class="col-md-3 col-lg-3">
                   <div class="thumbnail">
-                    <img id="img-producto" src="" style="height: 200px;">    
+                    <img id="img-producto" src="" style="height: 200px;">
                   </div>
                 </div>
                 <div class="col-md-3 col-lg-3">
@@ -202,6 +202,20 @@
                   </div>
                 </div>
                 <div class="col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="fechaCaptura">Fecha captura:</label>
+                    <input type="text" class="form-control" name="fechaCaptura" id="fechaCaptura" readonly>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group">
+                    <label for="fechaFinalizada">Fecha finalizada:</label>
+                    <input type="text" class="form-control" name="fechaFinalizada" id="fechaFinalizada" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3 col-lg-3">
                   <a id="verSubProductos" role="button" data-toggle="collapse" href="#collapseSubProductos" aria-expanded="false" aria-controls="collapseSubProductos">
                     Ver sub productos
                   </a>
@@ -210,7 +224,7 @@
             </form>
             <div class="collapse" id="collapseSubProductos">
               <div class="panel panel-default">
-                <div class="panel-body">         
+                <div class="panel-body">
                   <table id="tabla-subProductos" class="table table-hover table-bordered table-striped table-condensed">
                     <thead>
                       <th>Clave</th>
@@ -234,17 +248,8 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
-    <!-- <script src="js/jquery-3.2.1.min.js"></script> -->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>window.$ = window.jQuery = require('jquery');</script>-->
-    <!-- If the require doesn't work, include first the jQuery file
-    <script src="jquery-3.0.0.min.js"></script>-->
-    <!--<script src="js/jquery-3.2.1.min.js" onload="window.$ = window.jQuery = module.exports;"></script>-->
-    <!--<script>window.$ = window.jQuery = require('/js/jquery-3.2.1.min.js');</script>-->
-
-
-    <!--<script src="js/jquery-3.2.1.js"></script>-->
+    <script>window.$ = window.jQuery = require('./js/jquery-3.2.1.min.js')</script>
+    <!--<script src="js/jquery-3.2.1.min.js"></script>-->
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <!-- Metis Menu Plugin JavaScript -->

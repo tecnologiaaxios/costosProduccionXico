@@ -85,7 +85,7 @@ function mostrarSubProductos() {
     "scrollY": "500px",
     "scrollCollapse": true,
     "language": {
-      "url": "//cdn.datatables.net/plug-ins/a5734b29083/i18n/Spanish.json"
+      "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
     },
     "ordering": false,
     "columns": [
