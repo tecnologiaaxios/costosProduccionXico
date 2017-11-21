@@ -104,27 +104,252 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-lg-2">
+            <button onclick="abrirModalAgregar()" class="btn btn-primary" id="btnAgregar">Agregar sub producto</button>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-lg-12">
-            <label for="">Sub Productos:</label>
             <table id="tabla-subProductos" class="table table-condensed table-striped table-bordered table-hover">
+              <caption><strong>Sub Productos:</strong></caption>
               <thead>
                 <th>Clave</th>
                 <th>Nombre</th>
                 <th class="text-center">Moneda</th>
                 <th class="text-center">Precio de compra</th>
                 <th class="text-center">Precio en pesos</th>
+                <th class="text-center">Detalles</th>
               </thead>
               <tbody>
-                
+
               </tbody>
             </table>
           </div>
         </div>
       </div><!-- /#page-wrapper -->
-    </div><!-- /#wrapper -->            
+    </div><!-- /#wrapper -->
+    <div id="modal-agregar" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" onclick="cerrarModalAgregar()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Agregar subproducto</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="clave">Clave:</label>
+                  <input type="text" name="clave" id="clave" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nombre">Nombre:</label>
+                  <input type="text" name="nombre" id="nombre" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="moneda">Moneda:</label>
+                  <select class="form-control" name="moneda" id="moneda">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="PESO">Peso</option>
+                    <option value="DOLAR">Dólar</option>
+                    <option value="EURO">Euro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="descripcion">Descripción:</label>
+                  <textarea name="descripcion" id="descripcion" class="form-control" rows="4" cols="80"></textarea>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="categoria">Categoría:</label>
+                  <select name="categoria" id="categoria" class="form-control">
+
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="unidad">Unidad:</label>
+                  <select class="form-control" name="unidad" id="unidad">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="KG">KG</option>
+                    <option value="PZA">PZA</option>
+                    <option value="MTO">MTO</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nombreProveedor">Nombre proveedor:</label>
+                  <input type="text" name="nombreProveedor" id="nombreProveedor" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="precio">Precio:</label>
+                  <input type="number" name="precio" id="precio" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="precioPesos">Precio en pesos:</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" name="precioPesos" id="precioPesos" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group ">
+                  <label class="control-label " for="codigoBarras">Código de barras</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="glyphicon glyphicon-barcode"></i>
+                    </div>
+                    <input class="form-control" id="codigoBarras" name="codigoBarras" type="text"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" onclick="cerrarModalAgregar()">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="agregarSubProducto()">Guardar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div id="modal-ver" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Datos del subproducto</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="clave-ver">Clave:</label>
+                  <input type="text" name="clave-ver" id="clave-ver" class="form-control" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nombre-ver">Nombre:</label>
+                  <input type="text" name="nombre-ver" id="nombre-ver" class="form-control">
+                </div>
+              </div>
+              <!-- <div class="col-md-3">
+                <div class="form-group">
+                  <label for="moneda-ver">Moneda:</label>
+                  <select class="form-control" name="moneda-ver" id="moneda-ver">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="PESO">Peso</option>
+                    <option value="DOLAR">Dólar</option>
+                    <option value="EURO">Euro</option>
+                  </select>
+                </div>
+              </div> -->
+              <div class="col-md-3">
+                <div class="form-group ">
+                  <label class="control-label " for="codigoBarras-ver">Código de barras</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="glyphicon glyphicon-barcode"></i>
+                    </div>
+                    <input class="form-control" id="codigoBarras-ver" name="codigoBarras-ver" type="text"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nombreProveedor-ver">Nombre proveedor:</label>
+                  <input type="text" name="nombreProveedor-ver" id="nombreProveedor-ver" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="categoria-ver">Categoría:</label>
+                  <select name="categoria-ver" id="categoria-ver" class="form-control">
+
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="unidad-ver">Unidad:</label>
+                  <select class="form-control" name="unidad-ver" id="unidad-ver">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="KG">KG</option>
+                    <option value="PZA">PZA</option>
+                    <option value="MTO">MTO</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="descripcion-ver">Descripción:</label>
+                  <textarea name="descripcion-ver" id="descripcion-ver" class="form-control" rows="4" cols="80"></textarea>
+                </div>
+              </div>
+              <!-- <div class="col-md-3">
+                <div class="form-group">
+                  <label for="precio-ver">Precio:</label>
+                  <input type="number" name="precio-ver" id="precio-ver" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="precioPesos-ver">Precio en pesos:</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" name="precioPesos-ver" id="precioPesos-ver" class="form-control">
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <!-- <div class="row">
+              <div class="col-md-3">
+                <div class="form-group ">
+                  <label class="control-label " for="codigoBarras-ver">Código de barras</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="glyphicon glyphicon-barcode"></i>
+                    </div>
+                    <input class="form-control" id="codigoBarras-ver" name="codigoBarras-ver" type="text"/>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Guardar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <!-- jQuery -->
-    <script>window.$ = window.jQuery = require('./js/jquery-3.2.1.min.js')</script>
-    <!--<script src="js/jquery-3.2.1.min.js"></script>-->
+    <!-- <script>window.$ = window.jQuery = require('./js/jquery-3.2.1.min.js')</script> -->
+    <script src="js/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <!-- Metis Menu Plugin JavaScript -->

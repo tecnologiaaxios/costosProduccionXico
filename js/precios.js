@@ -16,28 +16,28 @@ function haySesion() {
     }
   });
 }
-  
+
 haySesion();
-  
+
 function mostrarNotificaciones() {
   let usuario = auth.currentUser.uid;
   let notificacionesRef = db.ref('notificaciones/almacen/'+usuario+'/lista');
   notificacionesRef.on('value', function(snapshot) {
     let lista = snapshot.val();
     let lis = "";
-  
+
     let arrayNotificaciones = [];
     for(let notificacion in lista) {
       arrayNotificaciones.push(lista[notificacion]);
     }
-  
+
     arrayNotificaciones.reverse();
-  
+
     for(let i in arrayNotificaciones) {
       let date = arrayNotificaciones[i].fecha;
       moment.locale('es');
       let fecha = moment(date, "MMMM DD YYYY, HH:mm:ss").fromNow();
-  
+
       lis += '<li>' +
                 '<a>' +
                   '<div>' +
@@ -47,18 +47,18 @@ function mostrarNotificaciones() {
                 '</a>' +
              '</li>';
     }
-  
+
     $('#contenedorNotificaciones').empty().append('<li class="dropdown-header">Notificaciones</li><li class="divider"></li>');
     $('#contenedorNotificaciones').append(lis);
   });
 }
-  
+
 function mostrarContador() {
   let uid = auth.currentUser.uid;
   let notificacionesRef = db.ref('notificaciones/almacen/'+uid);
   notificacionesRef.on('value', function(snapshot) {
     let cont = snapshot.val().cont;
-  
+
     if(cont > 0) {
       $('#spanNotificaciones').html(cont).show();
     }
@@ -67,13 +67,13 @@ function mostrarContador() {
     }
   });
 }
-  
+
 function verNotificaciones() {
   let uid = auth.currentUser.uid;
   let notificacionesRef = db.ref('notificaciones/almacen/'+uid);
   notificacionesRef.update({cont: 0});
 }
-  
+
 $('#campana').click(function() {
   verNotificaciones();
 });
@@ -93,16 +93,17 @@ function mostrarSubProductos() {
       { "width": "35%" },
       null,
       null,
+      null,
       null
     ]
   });
-  
+
   let rutaSubProductos = db.ref('subProductos');
   rutaSubProductos.on('value', function(snapshot) {
     let subProductos = snapshot.val();
     let filas = "";
     tabla.clear();
-  
+
     for(let subProducto in subProductos) {
       filas += `<tr>
                   <td>${subProducto}</td>
@@ -129,14 +130,123 @@ function mostrarSubProductos() {
                       <span class="input-group-btn">
                         <button onclick="guardarPrecio('${subProducto}', 'precio-${subProducto}')" class="btn btn-success" type="button"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
                       </span>
-                    </div>     
+                    </div>
                   </td>
-                  <td>${subProductos[subProducto].precioPesos}</td>
+                  <td class="text-right">$ ${subProductos[subProducto].precioPesos}</td>
+                  <td class="text-center">
+                    <button class="btn btn-default btn-sm" type="button" onclick="abrirModalVer('${subProducto}')">Ver más <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button>
+                  </td>
                 </tr>`;
     }
-  
+
     tabla.rows.add($(filas)).columns.adjust().draw();
   });
+}
+
+function abrirModalAgregar() {
+  $('#modal-agregar').modal('show');
+}
+
+function cerrarModalAgregar() {
+  $('#modal-agregar').modal('hide');
+
+  $('#clave').val('');
+  $('#nombre').val('');
+  $('#moneda').val('');
+  $('#descripcion').val('');
+  $('#categoria').val('');
+  $('#unidad').val('');
+  $('#nombreProveedor').val('');
+  $('#precio').val('');
+  $('#precioPesos').val('');
+}
+
+function agregarSubProducto() {
+  let clave = $('#clave').val();
+  let nombre = $('#nombre').val();
+  let moneda = $('#moneda').val();
+  let descripcion = $('#descripcion').val();
+  let categoria = $('#categoria').val();
+  let unidad = $('#unidad').val();
+  let nombreProveedor = $('#nombreProveedor').val();
+  let precio = Number($('#precio').val());
+  let precioPesos = Number($('#precioPesos').val());
+  let codigoBarras = $('#codigoBarras').val();
+
+  let rutaSubProductos = db.ref(`subProductos/${clave}`);
+  let nuevoSubProducto = {
+    nombre: nombre,
+    moneda: moneda,
+    descripcion: descripcion,
+    categoria: categoria,
+    unidad: unidad,
+    nombreProveedor: nombreProveedor,
+    precio: precio,
+    precioPesos: precioPesos,
+    codigoBarras: codigoBarras
+  }
+
+  rutaSubProductos.set(nuevoSubProducto);
+  $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha guardado`});
+
+  cerrarModalAgregar();
+}
+
+function abrirModalVer(claveSubProducto) {
+  let rutaSubProducto = db.ref(`subProductos/${claveSubProducto}`);
+  rutaSubProducto.once('value', function(snapshot) {
+    let subProducto = snapshot.val();
+
+    $('#clave-ver').val(claveSubProducto);
+    $('#nombre-ver').val(subProducto.nombre);
+    // $('#moneda-ver').val(subProducto.moneda);
+    $('#descripcion-ver').val(subProducto.descripcion);
+    $('#categoria-ver').val(subProducto.categoria);
+    $('#unidad-ver').val(subProducto.unidad);
+    $('#nombreProveedor-ver').val(subProducto.nombreProveedor);
+    // $('#precio-ver').val(subProducto.precio);
+    // $('#precioPesos-ver').val(subProducto.precioPesos);
+    $('#codigoBarras-ver').val(subProducto.codigoBarras);
+
+    $('#modal-ver').modal('show');
+  });
+}
+
+function actualizarSubProducto() {
+  let clave = $('#clave-ver').val();
+  let nombre = $('#nombre-ver').val();
+  let codigoBarras = $('#codigoBarras').val();
+  let nombreProveedor = $('#nombreProveedor').val();
+  let categoria = $('#categoria').val();
+  let unidad = $('#unidad').val();
+  let descripcion = $('#descripcion').val();
+
+  let rutaSubProducto = db.ref(`subProductos/${clave}`);
+  rutaSubProducto.update({
+    nombre: nombre,
+    codigoBarras: codigoBarras,
+    nombreProveedor: nombreProveedor,
+    categoria: categoria,
+    unidad: unidad,
+    descripcion: descripcion
+  });
+
+  $('#modal-ver').modal('hide');
+  $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha actualizado`});
+}
+
+function llenarSelectCategoria() {
+  let rutaCategorias = db.ref('categorias');
+  rutaCategorias.on('value', function(snap) {
+    let categorias = snap.val();
+    let options = "";
+
+    for(let i in categorias) {
+      options += `<option value="${categorias[i]}">${categorias[i]}</option>`;
+    }
+
+    $('#categoria').html(options);
+  })
 }
 
 function cambiarMoneda(claveSubProducto, idSelect) {
@@ -158,7 +268,7 @@ function guardarPrecio(claveSubProducto, idInput) {
   let rutaSubProducto = db.ref(`subProductos/${claveSubProducto}`);
   rutaSubProducto.once('value', function(snap) {
     let moneda = snap.val().moneda;
-    let rutaTipoCambio = db.ref('tipoCambio'); 
+    let rutaTipoCambio = db.ref('tipoCambio');
 
     if(moneda == "PESO") {
       console.log("PESO");
@@ -183,7 +293,7 @@ function guardarPrecio(claveSubProducto, idInput) {
         $.toaster({priority: 'info', title: 'Info:', message: `Se actualizó el precio del subProducto ${claveSubProducto}`});
       });
     }
-    else if(moneda == "EURO") { 
+    else if(moneda == "EURO") {
       console.log("EURO");
       rutaTipoCambio.once('value', function(snapshot) {
         let tiposCambio = snap.val();
@@ -191,7 +301,7 @@ function guardarPrecio(claveSubProducto, idInput) {
         let ultimo = tiposCambio[claveUltimo];
         let euro = ultimo.euro;
         let precioEuro = Number((precio * euro).toFixed(4));
-      
+
         rutaSubProducto.update({
           precio: precio,
           precioPesos: precioEuro
@@ -200,7 +310,7 @@ function guardarPrecio(claveSubProducto, idInput) {
       });
     }
   });
-  
+
 
   $(`#${idInput}`).attr('readonly', true);
 }
@@ -213,11 +323,11 @@ function actualizarPrecioPesos() {
     let ultimo = tiposCambio[claveUltimo];
     let dolar = ultimo.dolar;
     let euro = ultimo.euro;
-    
-    let rutaSubProductos = db.ref('subProductos'); 
+
+    let rutaSubProductos = db.ref('subProductos');
     rutaSubProductos.once('value', function(snapshot) {
       let subProductos = snapshot.val();
-  
+
       for(let subProducto in subProductos) {
         let precio = subProductos[subProducto].precio;
         let moneda = subProductos[subProducto].moneda;
@@ -225,7 +335,7 @@ function actualizarPrecioPesos() {
 
         if(moneda == "DOLAR") {
           let precioPesos = precio * dolar;
-          
+
           rutaSubProducto.update({
             precioPesos: precioPesos
           });
@@ -247,6 +357,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   mostrarSubProductos();
+  llenarSelectCategoria();
 
   $.toaster({
     settings: {
