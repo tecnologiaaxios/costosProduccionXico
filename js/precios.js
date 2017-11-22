@@ -176,6 +176,16 @@ function agregarSubProducto() {
   if(clave.length > 0 && nombre.length > 0 && moneda != null && moneda != undefined && categoria != null &&
     categoria != undefined && unidad != null && unidad != undefined && precio.length > 0) {
 
+    if(nombreProveedor.length < 1) {
+      nombreProveedor = "";
+    }
+    if(codigoBarrdas.length < 1) {
+      codigoBarras = "";
+    }
+    if(descripcion.length < 1) {
+      descripcion = "";
+    }
+
     let rutaSubProductos = db.ref(`subProductos/${clave}`);
     let nuevoSubProducto = {
       nombre: nombre,
@@ -313,7 +323,7 @@ $('#categoria').change(function () {
 
 $('#precio').keyup(function () {
   let precio = $(this).val();
-  
+
   if(precio.length > 0) {
     $('#precio').parent().addClass('has-error');
     $('#helpBlockPrecio').removeClass('hidden');
