@@ -141,12 +141,14 @@
                 <div class="form-group">
                   <label for="clave">Clave:</label>
                   <input type="text" name="clave" id="clave" class="form-control">
+                  <span id="helpBlockClave" class="help-block hidden">Campo obligatorio</span>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="nombre">Nombre:</label>
                   <input type="text" name="nombre" id="nombre" class="form-control">
+                  <span id="helpBlockNombre" class="help-block hidden">Campo obligatorio</span>
                 </div>
               </div>
               <div class="col-md-3">
@@ -158,6 +160,7 @@
                     <option value="DOLAR">Dólar</option>
                     <option value="EURO">Euro</option>
                   </select>
+                  <span id="helpBlockMoneda" class="help-block hidden">Campo obligatorio</span>
                 </div>
               </div>
             </div>
@@ -174,6 +177,7 @@
                   <select name="categoria" id="categoria" class="form-control">
 
                   </select>
+                  <span id="helpBlockCategoria" class="help-block hidden">Campo obligatorio</span>
                 </div>
               </div>
               <div class="col-md-3">
@@ -185,6 +189,7 @@
                     <option value="PZA">PZA</option>
                     <option value="MTO">MTO</option>
                   </select>
+                  <span id="helpBlockUnidad" class="help-block hidden">Campo obligatorio</span>
                 </div>
               </div>
             </div>
@@ -199,6 +204,7 @@
                 <div class="form-group">
                   <label for="precio">Precio:</label>
                   <input type="number" name="precio" id="precio" class="form-control">
+                  <span id="helpBlockPrecioPesos" class="help-block hidden">No se ha seleccionado moneda</span>
                 </div>
               </div>
               <div class="col-md-3">
@@ -206,7 +212,7 @@
                   <label for="precioPesos">Precio en pesos:</label>
                   <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input type="number" name="precioPesos" id="precioPesos" class="form-control">
+                    <input type="number" name="precioPesos" id="precioPesos" class="form-control" readonly>
                   </div>
                 </div>
               </div>

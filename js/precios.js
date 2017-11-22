@@ -173,24 +173,156 @@ function agregarSubProducto() {
   let precioPesos = Number($('#precioPesos').val());
   let codigoBarras = $('#codigoBarras').val();
 
-  let rutaSubProductos = db.ref(`subProductos/${clave}`);
-  let nuevoSubProducto = {
-    nombre: nombre,
-    moneda: moneda,
-    descripcion: descripcion,
-    categoria: categoria,
-    unidad: unidad,
-    nombreProveedor: nombreProveedor,
-    precio: precio,
-    precioPesos: precioPesos,
-    codigoBarras: codigoBarras
+  if(clave.length > 0 && nombre.length > 0 && moneda != null && moneda != undefined && categoria != null &&
+    categoria != undefined && unidad != null && unidad != undefined && precio.length > 0) {
+
+    let rutaSubProductos = db.ref(`subProductos/${clave}`);
+    let nuevoSubProducto = {
+      nombre: nombre,
+      moneda: moneda,
+      descripcion: descripcion,
+      categoria: categoria,
+      unidad: unidad,
+      nombreProveedor: nombreProveedor,
+      precio: precio,
+      precioPesos: precioPesos,
+      codigoBarras: codigoBarras
+    }
+
+    rutaSubProductos.set(nuevoSubProducto);
+    $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha guardado`});
+
+    cerrarModalAgregar();
   }
-
-  rutaSubProductos.set(nuevoSubProducto);
-  $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha guardado`});
-
-  cerrarModalAgregar();
+  else {
+    if(clave.length > 0) {
+      $('#clave').parent().addClass('has-error');
+      $('#helpBlockClave').removeClass('hidden');
+    }
+    else {
+      $('#clave').parent().addClass('has-error');
+      $('#helpBlockClave').removeClass('hidden');
+    }
+    if(nombre.length > 0) {
+      $('#nombre').parent().addClass('has-error');
+      $('#helpBlockNombre').removeClass('hidden');
+    }
+    else {
+      $('#nombre').parent().addClass('has-error');
+      $('#helpBlockNombre').removeClass('hidden');
+    }
+    if(moneda != undefined) {
+      $('#moneda').parent().addClass('has-error');
+      $('#helpBlockMoneda').removeClass('hidden');
+    }
+    else {
+      $('#moneda').parent().addClass('has-error');
+      $('#helpBlockMoneda').removeClass('hidden');
+    }
+    if(unidad != undefined) {
+      $('#unidad').parent().addClass('has-error');
+      $('#helpBlockUnidad').removeClass('hidden');
+    }
+    else {
+      $('#unidad').parent().addClass('has-error');
+      $('#helpBlockUnidad').removeClass('hidden');
+    }
+    if(categoria != undefined) {
+      $('#categoria').parent().addClass('has-error');
+      $('#helpBlockCategoria').removeClass('hidden');
+    }
+    else {
+      $('#categoria').parent().addClass('has-error');
+      $('#helpBlockCategoria').removeClass('hidden');
+    }
+    if(precio.length > 0) {
+      $('#precio').parent().addClass('has-error');
+      $('#helpBlockPrecio').removeClass('hidden');
+    }
+    else {
+      $('#precio').parent().addClass('has-error');
+      $('#helpBlockPrecio').removeClass('hidden');
+    }
+  }
 }
+
+$('#clave').keyup(function () {
+  let clave = $(this).val();
+
+  if(clave.length > 0) {
+    $('#clave').parent().addClass('has-error');
+    $('#helpBlockClave').removeClass('hidden');
+  }
+  else {
+    $('#clave').parent().addClass('has-error');
+    $('#helpBlockClave').removeClass('hidden');
+  }
+});
+
+$('#nombre').keyup(function () {
+  let nombre = $(this).val();
+
+  if(nombre.length > 0) {
+    $('#nombre').parent().addClass('has-error');
+    $('#helpBlockNombre').removeClass('hidden');
+  }
+  else {
+    $('#nombre').parent().addClass('has-error');
+    $('#helpBlockNombre').removeClass('hidden');
+  }
+});
+
+$('#moneda').change(function () {
+  let moneda = $(this).val();
+
+  if(moneda != undefined) {
+    $('#moneda').parent().addClass('has-error');
+    $('#helpBlockMoneda').removeClass('hidden');
+  }
+  else {
+    $('#moneda').parent().addClass('has-error');
+    $('#helpBlockMoneda').removeClass('hidden');
+  }
+});
+
+$('#unidad').change(function () {
+  let unidad = $(this).val();
+
+  if(unidad != undefined) {
+    $('#unidad').parent().addClass('has-error');
+    $('#helpBlockUnidad').removeClass('hidden');
+  }
+  else {
+    $('#unidad').parent().addClass('has-error');
+    $('#helpBlockUnidad').removeClass('hidden');
+  }
+});
+
+$('#categoria').change(function () {
+  let categoria = $(this).val();
+
+  if(categoria != undefined) {
+    $('#categoria').parent().addClass('has-error');
+    $('#helpBlockCategoria').removeClass('hidden');
+  }
+  else {
+    $('#categoria').parent().addClass('has-error');
+    $('#helpBlockCategoria').removeClass('hidden');
+  }
+});
+
+$('#precio').keyup(function () {
+  let precio = $(this).val();
+  
+  if(precio.length > 0) {
+    $('#precio').parent().addClass('has-error');
+    $('#helpBlockPrecio').removeClass('hidden');
+  }
+  else {
+    $('#precio').parent().addClass('has-error');
+    $('#helpBlockPrecio').removeClass('hidden');
+  }
+});
 
 function abrirModalVer(claveSubProducto) {
   let rutaSubProducto = db.ref(`subProductos/${claveSubProducto}`);
@@ -261,6 +393,42 @@ function cambiarMoneda(claveSubProducto, idSelect) {
 function habilitarEdicion(idInput) {
   $(`#${idInput}`).attr('readonly', false);
 }
+
+$('#precio').keyup(function () {
+  let moneda = $('#moneda').val();
+  let precio = $(this).val();
+  let rutaTipoCambio = db.ref('tipoCambio');
+
+  if(moneda == "PESO") {
+    $('#precioPesos').val(precio);
+  }
+  else if (moneda == "DOLAR") {
+    rutaTipoCambio.once('value').then(function(snapshot) {
+      let tiposCambio = snapshot.val();
+      let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
+      let ultimo = tiposCambio[claveUltimo];
+      let dolar = ultimo.dolar;
+      let precioPesos = Number((precio * dolar).toFixed(4));
+
+      $('#precioPesos').val(precioPesos);
+    });
+  }
+  else if (moneda == "EURO") {
+    rutaTipoCambio.once('value').then(function(snapshot) {
+      let tiposCambio = snapshot.val();
+      let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
+      let ultimo = tiposCambio[claveUltimo];
+      let euro = ultimo.euro;
+      let precioPesos = Number((precio * euro).toFixed(4));
+
+      $('#precioPesos').val(precioPesos);
+    });
+  }
+  else {
+    $('#precio').parent().parent().addClass('has-error');
+    $('#helpBlockPrecioPesos').removeClass('hidden');
+  }
+});
 
 function guardarPrecio(claveSubProducto, idInput) {
   let precio = Number($(`#${idInput}`).val());

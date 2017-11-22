@@ -70,7 +70,7 @@ function mostrarProductos() {
                             </div>
                           </div>
                         </a>
-                      </div>`;   
+                      </div>`;
     }
 
     $('#fila-xs').html(thumbnailsXs);
@@ -134,9 +134,7 @@ function abrirModalProducto(claveProducto) {
           tabla.columns.adjust().draw();
         }
       });
-
     }
-
   })
 }
 
@@ -310,7 +308,7 @@ $('#categoria').change(function() {
                             </div>
                           </div>
                         </a>
-                      </div>`;   
+                      </div>`;
     }
 
     $('#fila-xs').html(thumbnailsXs);
@@ -329,7 +327,7 @@ $('#producto').change(function() {
     let producto = datos.val();
     let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
 
-    
+
       thumbnailsXs += `<div class="col-xs-12">
                         <a class="thumbnail-a" onclick="abrirModalProducto('${claveProducto}')">
                           <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${producto.nombre}">
@@ -388,8 +386,8 @@ $('#producto').change(function() {
                             </div>
                           </div>
                         </a>
-                      </div>`;   
-    
+                      </div>`;
+
 
     $('#fila-xs').html(thumbnailsXs);
     $('#fila-sm').html(thumbnailsSm);
