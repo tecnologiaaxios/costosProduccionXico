@@ -94,6 +94,7 @@ function mostrarSubProductos() {
       null,
       null,
       null,
+      null,
       null
     ]
   });
@@ -136,11 +137,22 @@ function mostrarSubProductos() {
                   <td class="text-center">
                     <button class="btn btn-default btn-sm" type="button" onclick="abrirModalVer('${subProducto}')">Ver más <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i></button>
                   </td>
+                  <td class="text-center"><button onclick="abrirModalConfirmar('${subProducto}')" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button></td>
                 </tr>`;
     }
 
     tabla.rows.add($(filas)).columns.adjust().draw();
   });
+}
+
+function abrirModalConfirmar(claveSubProducto) {
+  $('#modal-confirmar').modal('show');
+  $('#btnSi').attr('onclick', `eliminarSubProducto("${claveSubProducto}")`);
+}
+
+function eliminarSubProducto(claveSubProducto) {
+  let rutaSubProductos = db.ref('subProductos');
+  rutaSubProductos.child(claveSubProducto).remove();
 }
 
 function abrirModalAgregar() {
@@ -176,78 +188,98 @@ function agregarSubProducto() {
   if(clave.length > 0 && nombre.length > 0 && moneda != null && moneda != undefined && categoria != null &&
     categoria != undefined && unidad != null && unidad != undefined && precio.length > 0) {
 
-    if(nombreProveedor.length < 1) {
-      nombreProveedor = "";
-    }
-    if(codigoBarrdas.length < 1) {
-      codigoBarras = "";
-    }
-    if(descripcion.length < 1) {
-      descripcion = "";
-    }
+    let rutaSubProducto = db.ref(`subProducto/${clave}`);
+    rutaSubProducto.once('value', function(snap) {
+      if( !snap.hasChildren()) {
+        if(nombreProveedor.length < 1) {
+          nombreProveedor = "";
+        }
+        if(codigoBarrdas.length < 1) {
+          codigoBarras = "";
+        }
+        if(descripcion.length < 1) {
+          descripcion = "";
+        }
 
-    let rutaSubProductos = db.ref(`subProductos/${clave}`);
-    let nuevoSubProducto = {
-      nombre: nombre,
-      moneda: moneda,
-      descripcion: descripcion,
-      categoria: categoria,
-      unidad: unidad,
-      nombreProveedor: nombreProveedor,
-      precio: precio,
-      precioPesos: precioPesos,
-      codigoBarras: codigoBarras
-    }
+        let nuevoSubProducto = {
+          nombre: nombre,
+          moneda: moneda,
+          descripcion: descripcion,
+          categoria: categoria,
+          unidad: unidad,
+          nombreProveedor: nombreProveedor,
+          precio: precio,
+          precioPesos: precioPesos,
+          codigoBarras: codigoBarras
+        }
 
-    rutaSubProductos.set(nuevoSubProducto);
-    $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha guardado`});
+        rutaSubProducto.set(nuevoSubProducto);
+        $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha guardado`});
 
-    cerrarModalAgregar();
+        cerrarModalAgregar();
+      }
+      else {
+        $.toaster({priority: 'warning', title: 'Mensaje:', message: `Ya hay un subproducto con esa clave`});
+
+        $('#clave').val('');
+        $('#nombre').val('');
+        $('#moneda').val('');
+        $('#descripcion').val('');
+        $('#categoria').val('');
+        $('#unidad').val('');
+        $('#nombreProveedor').val('');
+        $('#precio').val('');
+        $('#precioPesos').val('');
+        $('#codigoBarras').val('');
+      }
+    });
+
+
   }
   else {
     if(clave.length > 0) {
-      $('#clave').parent().addClass('has-error');
-      $('#helpBlockClave').removeClass('hidden');
+      $('#clave').parent().removeClass('has-error');
+      $('#helpBlockClave').addClass('hidden');
     }
     else {
       $('#clave').parent().addClass('has-error');
       $('#helpBlockClave').removeClass('hidden');
     }
     if(nombre.length > 0) {
-      $('#nombre').parent().addClass('has-error');
-      $('#helpBlockNombre').removeClass('hidden');
+      $('#nombre').parent().removeClass('has-error');
+      $('#helpBlockNombre').addClass('hidden');
     }
     else {
       $('#nombre').parent().addClass('has-error');
       $('#helpBlockNombre').removeClass('hidden');
     }
     if(moneda != undefined) {
-      $('#moneda').parent().addClass('has-error');
-      $('#helpBlockMoneda').removeClass('hidden');
+      $('#moneda').parent().removeClass('has-error');
+      $('#helpBlockMoneda').addClass('hidden');
     }
     else {
       $('#moneda').parent().addClass('has-error');
       $('#helpBlockMoneda').removeClass('hidden');
     }
     if(unidad != undefined) {
-      $('#unidad').parent().addClass('has-error');
-      $('#helpBlockUnidad').removeClass('hidden');
+      $('#unidad').parent().removeClass('has-error');
+      $('#helpBlockUnidad').addClass('hidden');
     }
     else {
       $('#unidad').parent().addClass('has-error');
       $('#helpBlockUnidad').removeClass('hidden');
     }
     if(categoria != undefined) {
-      $('#categoria').parent().addClass('has-error');
-      $('#helpBlockCategoria').removeClass('hidden');
+      $('#categoria').parent().removeClass('has-error');
+      $('#helpBlockCategoria').addClass('hidden');
     }
     else {
       $('#categoria').parent().addClass('has-error');
       $('#helpBlockCategoria').removeClass('hidden');
     }
     if(precio.length > 0) {
-      $('#precio').parent().addClass('has-error');
-      $('#helpBlockPrecio').removeClass('hidden');
+      $('#precio').parent().removeClass('has-error');
+      $('#helpBlockPrecio').addClass('hidden');
     }
     else {
       $('#precio').parent().addClass('has-error');
@@ -260,8 +292,8 @@ $('#clave').keyup(function () {
   let clave = $(this).val();
 
   if(clave.length > 0) {
-    $('#clave').parent().addClass('has-error');
-    $('#helpBlockClave').removeClass('hidden');
+    $('#clave').parent().removeClass('has-error');
+    $('#helpBlockClave').addClass('hidden');
   }
   else {
     $('#clave').parent().addClass('has-error');
@@ -273,8 +305,8 @@ $('#nombre').keyup(function () {
   let nombre = $(this).val();
 
   if(nombre.length > 0) {
-    $('#nombre').parent().addClass('has-error');
-    $('#helpBlockNombre').removeClass('hidden');
+    $('#nombre').parent().removeClass('has-error');
+    $('#helpBlockNombre').addClass('hidden');
   }
   else {
     $('#nombre').parent().addClass('has-error');
@@ -286,8 +318,8 @@ $('#moneda').change(function () {
   let moneda = $(this).val();
 
   if(moneda != undefined) {
-    $('#moneda').parent().addClass('has-error');
-    $('#helpBlockMoneda').removeClass('hidden');
+    $('#moneda').parent().removeClass('has-error');
+    $('#helpBlockMoneda').addClass('hidden');
   }
   else {
     $('#moneda').parent().addClass('has-error');
@@ -299,8 +331,8 @@ $('#unidad').change(function () {
   let unidad = $(this).val();
 
   if(unidad != undefined) {
-    $('#unidad').parent().addClass('has-error');
-    $('#helpBlockUnidad').removeClass('hidden');
+    $('#unidad').parent().removeClass('has-error');
+    $('#helpBlockUnidad').addClass('hidden');
   }
   else {
     $('#unidad').parent().addClass('has-error');
@@ -312,8 +344,8 @@ $('#categoria').change(function () {
   let categoria = $(this).val();
 
   if(categoria != undefined) {
-    $('#categoria').parent().addClass('has-error');
-    $('#helpBlockCategoria').removeClass('hidden');
+    $('#categoria').parent().removeClass('has-error');
+    $('#helpBlockCategoria').addClass('hidden');
   }
   else {
     $('#categoria').parent().addClass('has-error');
@@ -325,8 +357,8 @@ $('#precio').keyup(function () {
   let precio = $(this).val();
 
   if(precio.length > 0) {
-    $('#precio').parent().addClass('has-error');
-    $('#helpBlockPrecio').removeClass('hidden');
+    $('#precio').parent().removeClass('has-error');
+    $('#helpBlockPrecio').addClass('hidden');
   }
   else {
     $('#precio').parent().addClass('has-error');

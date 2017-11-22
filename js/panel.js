@@ -81,6 +81,11 @@ function mostrarProductos() {
   });
 }
 
+$('#modalProducto').on('hide.bs.modal', function() {
+  let claveProducto = $('#claveProducto').val();
+  $(`#grafica-${claveProducto}`).remove();
+});
+
 function abrirModalProducto(claveProducto) {
   let tabla = $(`#tabla-subProductos`).DataTable({
     destroy: true,
@@ -103,6 +108,7 @@ function abrirModalProducto(claveProducto) {
     let subProductos = snap.val().subProductos;
     let fechaCaptura = snap.val().fechaCaptura;
     let fechaFinalizada = snap.val().fechaFinalizada;
+    //let historialCostos = snap.val().
 
     $('#img-producto').attr('src', `img/${claveProducto}.jpg`);
     $('#claveProducto').val(claveProducto);
@@ -135,7 +141,47 @@ function abrirModalProducto(claveProducto) {
         }
       });
     }
-  })
+
+    $('#contenedorGrafica').append(`<canvas id="grafica-${claveProducto}"></canvas>`);
+    let rutaBatidas = db.ref('batidas');
+    rutaBatidas.orderByChild("claveProducto").equalTo(claveProducto).limitToLast(7).once('value', function (snapshot) {
+      let batidas = snapshot.val();
+      let fechas = [], costos = [];
+
+      for(let batida in batidas) {
+        fechas.push(batidas[batida].fechaCaptura);
+        costos.push(batidas[batida].costo);
+      }
+
+      let canvas = document.getElementById(`grafica-${claveProducto}`);
+      let ctx = canvas.getContext('2d');
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      let chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: fechas,
+              datasets: [{
+                  label: claveProducto,
+                  backgroundColor: '#ffad32',
+                  borderColor: '#ffad32',
+                  data: costos,
+              }]
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: true,
+              position: "top",
+              text: "Costos",
+              fontSize: 18,
+              fontColor: "#111"
+            }
+          }
+      });
+    });
+  });
 }
 
 $('#modalProducto').on('shown.bs.modal', function() {

@@ -119,6 +119,7 @@
                 <th class="text-center">Precio de compra</th>
                 <th class="text-center">Precio en pesos</th>
                 <th class="text-center">Detalles</th>
+                <th class="text-center">Eliminar</th>
               </thead>
               <tbody>
 
@@ -353,9 +354,26 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <div id="modal-confirmar" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Confirmar eliminación</h4>
+          </div>
+          <div class="modal-body">
+            <p>¿Esta seguro de eliminar este subproducto? \n Esta acción no podrá deshacerse</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            <button id="btnSi" type="button" class="btn btn-primary">Sí</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <!-- jQuery -->
-    <!-- <script>window.$ = window.jQuery = require('./js/jquery-3.2.1.min.js')</script> -->
-    <script src="js/jquery-3.2.1.min.js"></script>
+    <script>window.$ = window.jQuery = require('./js/jquery-3.2.1.min.js')</script>
+    <!-- <script src="js/jquery-3.2.1.min.js"></script> -->
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <!-- Metis Menu Plugin JavaScript -->
