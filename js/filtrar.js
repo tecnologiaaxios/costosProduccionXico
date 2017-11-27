@@ -31,7 +31,7 @@ function mostrarProductos() {
                               </div>
                             </div>
                           </a>
-                        </div>`; 
+                        </div>`;
 
         thumbnailsSm += `<div class="col-sm-6">
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
@@ -48,7 +48,7 @@ function mostrarProductos() {
                             </div>
                           </a>
                         </div>`;
-        
+
         thumbnailsMd += `<div class="col-md-3">
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
                             <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
@@ -93,7 +93,7 @@ function mostrarProductos() {
 
 function filtrarPorFecha() {
   let fechaString = $('#fecha').val();
-  var date = fechaString.split("-");
+  let date = fechaString.split("-");
   let dia = date[2];
   let mes = date[1];
   let año = date[0];
@@ -109,7 +109,7 @@ function filtrarPorFecha() {
     for(let producto in productos) {
       let finalizada = (productos[producto].estado === "Finalizada") ? true : false;
 
-      
+
 
       if(finalizada) {
         thumbnailsXs += `<div class="col-xs-12">
@@ -126,7 +126,7 @@ function filtrarPorFecha() {
                               </div>
                             </div>
                           </a>
-                        </div>`; 
+                        </div>`;
 
         thumbnailsSm += `<div class="col-sm-6">
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
@@ -143,7 +143,7 @@ function filtrarPorFecha() {
                             </div>
                           </a>
                         </div>`;
-        
+
         thumbnailsMd += `<div class="col-md-3">
                           <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
                             <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombreProducto}">
@@ -240,9 +240,9 @@ function abrirModalProducto(idBatida) {
           tabla.columns.adjust().draw();
         }
       });
-      
+
     }
-    
+
   })
 }
 

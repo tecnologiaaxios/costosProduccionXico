@@ -1,6 +1,8 @@
 const db = firebase.database();
 const auth = firebase.auth();
 
+var pagina = 0;
+
 function logout() {
   auth.signOut();
 }
@@ -90,7 +92,7 @@ function mostrarSubProductos() {
     "ordering": false,
     "columns": [
       null,
-      { "width": "35%" },
+      { "width": "25%" },
       null,
       null,
       null,
@@ -142,6 +144,7 @@ function mostrarSubProductos() {
     }
 
     tabla.rows.add($(filas)).columns.adjust().draw();
+    tabla.page(pagina).draw('page');
   });
 }
 
@@ -171,7 +174,45 @@ function cerrarModalAgregar() {
   $('#nombreProveedor').val('');
   $('#precio').val('');
   $('#precioPesos').val('');
+  $('#codigoBarras').val('');
+
+  $('#clave').parent().removeClass('has-error');
+  $('#nombre').parent().removeClass('has-error');
+  $('#moneda').parent().removeClass('has-error');
+  $('#categoria').parent().removeClass('has-error');
+  $('#unidad').parent().removeClass('has-error');
+  $('#precio').parent().removeClass('has-error');
+
+  $('#modal-agregar .modal-body span .help-block').addClass('hidden');
 }
+
+function permitirEditar() {
+  $('#nombre-ver').removeAttr('readonly');
+  $('#codigoBarras-ver').removeAttr('readonly');
+  $('#nombreProveedor-ver').removeAttr('readonly');
+  $('#categoria-ver').removeAttr('readonly');
+  $('#unidad-ver').removeAttr('readonly');
+  $('#descripcion-ver').removeAttr('readonly');
+
+  $('#btnGuardar').removeClass('disabled');
+}
+
+$('#modal-ver').on('hide.bs.modal', function() {
+  $('#nombre-ver').attr('readonly', true);
+  $('#codigoBarras-ver').attr('readonly', true);
+  $('#nombreProveedor-ver').attr('readonly', true);
+  $('#categoria-ver').attr('readonly', true);
+  $('#unidad-ver').attr('readonly', true);
+  $('#descripcion-ver').attr('readonly', true);
+
+  $('#nombre-ver').parent().removeClass('has-error');
+  $('#moneda-ver').parent().removeClass('has-error');
+  $('#categoria-ver').parent().removeClass('has-error');
+  $('#unidad-ver').parent().removeClass('has-error');
+  $('#precio-ver').parent().removeClass('has-error');
+
+  $('#modal-ver .modal-body span .help-block').addClass('hidden');
+});
 
 function agregarSubProducto() {
   let clave = $('#clave').val();
@@ -181,20 +222,20 @@ function agregarSubProducto() {
   let categoria = $('#categoria').val();
   let unidad = $('#unidad').val();
   let nombreProveedor = $('#nombreProveedor').val();
-  let precio = Number($('#precio').val());
+  let precio = $('#precio').val();
   let precioPesos = Number($('#precioPesos').val());
   let codigoBarras = $('#codigoBarras').val();
 
   if(clave.length > 0 && nombre.length > 0 && moneda != null && moneda != undefined && categoria != null &&
     categoria != undefined && unidad != null && unidad != undefined && precio.length > 0) {
 
-    let rutaSubProducto = db.ref(`subProducto/${clave}`);
+    let rutaSubProducto = db.ref(`subProductos/${clave}`);
     rutaSubProducto.once('value', function(snap) {
       if( !snap.hasChildren()) {
         if(nombreProveedor.length < 1) {
           nombreProveedor = "";
         }
-        if(codigoBarrdas.length < 1) {
+        if(codigoBarras.length < 1) {
           codigoBarras = "";
         }
         if(descripcion.length < 1) {
@@ -208,7 +249,7 @@ function agregarSubProducto() {
           categoria: categoria,
           unidad: unidad,
           nombreProveedor: nombreProveedor,
-          precio: precio,
+          precio: Number(precio),
           precioPesos: precioPesos,
           codigoBarras: codigoBarras
         }
@@ -288,6 +329,108 @@ function agregarSubProducto() {
   }
 }
 
+function actualizarSubProducto() {
+  let clave = $('#clave-ver').val(),
+      nombre = $('#nombre-ver').val(),
+      codigoBarras = $('#codigoBarras-ver').val(),
+      nombreProveedor = $('#nombreProveedor').val();
+      categoria = $('#categoria-ver').val(),
+      unidad = $('#unidad').val(),
+      descripcion = $('#descripcion').val();
+
+  if(nombre.length > 0 && categoria != undefined && categoria != null && unidad != undefined && unidad != null) {
+    let rutaSubProducto = db.ref(`subProductos/${clave}`);
+
+    if(nombreProveedor.length < 1) {
+      nombreProveedor = "";
+    }
+    if(descripcion.length < 1) {
+      descripcion = "";
+    }
+    if(codigoBarras.length < 1) {
+      codigoBarras = "";
+    }
+
+    rutaSubProducto.update({
+      nombre: nombre,
+      nombreProveedor: nombreProveedor,
+      codigoBarras: codigoBarras,
+      categoria: categoria,
+      unidad: unidad,
+      descripcion: descripcion
+    });
+
+    $('#modal-ver').modal('hide');
+    $.toaster({priority: 'info', title: 'Info:', message: `Se guardaron los cambios de este subproducto`});
+  }
+  else {
+    if(nombre.length > 0) {
+      $('#nombre-ver').parent().removeClass('has-error');
+      $('#helpBlockNombreVer').addClass('hidden');
+    }
+    else {
+      $('#nombre-ver').parent().addClass('has-error');
+      $('#helpBlockNombreVer').removeClass('hidden');
+    }
+    if(unidad != undefined) {
+      $('#unidad').parent().removeClass('has-error');
+      $('#helpBlockUnidadVer').addClass('hidden');
+    }
+    else {
+      $('#unidad-ver').parent().addClass('has-error');
+      $('#helpBlockUnidadVer').removeClass('hidden');
+    }
+    if(categoria != undefined) {
+      $('#categoria-ver').parent().removeClass('has-error');
+      $('#helpBlockCategoriaVer').addClass('hidden');
+    }
+    else {
+      $('#categoria-ver').parent().addClass('has-error');
+      $('#helpBlockCategoriaVer').removeClass('hidden');
+    }
+  }
+}
+
+$('#nombre-ver').keyup(function () {
+  let nombre = $(this).val();
+
+  if(nombre.length > 0) {
+    $('#nombre-ver').parent().removeClass('has-error');
+    $('#helpBlockNombreVer').addClass('hidden');
+  }
+  else {
+    $('#nombre-ver').parent().addClass('has-error');
+    $('#helpBlockNombreVer').removeClass('hidden');
+  }
+});
+
+$('#unidad-ver').change(function () {
+  let unidad = $(this).val();
+
+  if(unidad != undefined) {
+    $('#unidad-ver').parent().removeClass('has-error');
+    $('#helpBlockUnidadVer').addClass('hidden');
+  }
+  else {
+    $('#unidad-ver').parent().addClass('has-error');
+    $('#helpBlockUnidadVer').removeClass('hidden');
+  }
+});
+
+$('#categoria-ver').change(function () {
+  let categoria = $(this).val();
+
+  if(categoria != undefined) {
+    $('#categoria-ver').parent().removeClass('has-error');
+    $('#helpBlockCategoriaVer').addClass('hidden');
+  }
+  else {
+    $('#categoria-ver').parent().addClass('has-error');
+    $('#helpBlockCategoriaVer').removeClass('hidden');
+  }
+});
+
+
 $('#clave').keyup(function () {
   let clave = $(this).val();
 
@@ -353,19 +496,6 @@ $('#categoria').change(function () {
   }
 });
 
-$('#precio').keyup(function () {
-  let precio = $(this).val();
-
-  if(precio.length > 0) {
-    $('#precio').parent().removeClass('has-error');
-    $('#helpBlockPrecio').addClass('hidden');
-  }
-  else {
-    $('#precio').parent().addClass('has-error');
-    $('#helpBlockPrecio').removeClass('hidden');
-  }
-});
-
 function abrirModalVer(claveSubProducto) {
   let rutaSubProducto = db.ref(`subProductos/${claveSubProducto}`);
   rutaSubProducto.once('value', function(snapshot) {
@@ -386,29 +516,6 @@ function abrirModalVer(claveSubProducto) {
   });
 }
 
-function actualizarSubProducto() {
-  let clave = $('#clave-ver').val();
-  let nombre = $('#nombre-ver').val();
-  let codigoBarras = $('#codigoBarras').val();
-  let nombreProveedor = $('#nombreProveedor').val();
-  let categoria = $('#categoria').val();
-  let unidad = $('#unidad').val();
-  let descripcion = $('#descripcion').val();
-
-  let rutaSubProducto = db.ref(`subProductos/${clave}`);
-  rutaSubProducto.update({
-    nombre: nombre,
-    codigoBarras: codigoBarras,
-    nombreProveedor: nombreProveedor,
-    categoria: categoria,
-    unidad: unidad,
-    descripcion: descripcion
-  });
-
-  $('#modal-ver').modal('hide');
-  $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha actualizado`});
-}
-
 function llenarSelectCategoria() {
   let rutaCategorias = db.ref('categorias');
   rutaCategorias.on('value', function(snap) {
@@ -420,6 +527,7 @@ function llenarSelectCategoria() {
     }
 
     $('#categoria').html(options);
+    $('#categoria-ver').html(options);
   })
 }
 
@@ -434,6 +542,7 @@ function cambiarMoneda(claveSubProducto, idSelect) {
 
 function habilitarEdicion(idInput) {
   $(`#${idInput}`).attr('readonly', false);
+  $(`#${idInput}`).select();
 }
 
 $('#precio').keyup(function () {
@@ -441,35 +550,53 @@ $('#precio').keyup(function () {
   let precio = $(this).val();
   let rutaTipoCambio = db.ref('tipoCambio');
 
-  if(moneda == "PESO") {
-    $('#precioPesos').val(precio);
-  }
-  else if (moneda == "DOLAR") {
-    rutaTipoCambio.once('value').then(function(snapshot) {
-      let tiposCambio = snapshot.val();
-      let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
-      let ultimo = tiposCambio[claveUltimo];
-      let dolar = ultimo.dolar;
-      let precioPesos = Number((precio * dolar).toFixed(4));
+  if(precio.length > 0) {
+    $('#precio').parent().removeClass('has-error');
+    $('#helpBlockPrecio').addClass('hidden');
 
-      $('#precioPesos').val(precioPesos);
-    });
-  }
-  else if (moneda == "EURO") {
-    rutaTipoCambio.once('value').then(function(snapshot) {
-      let tiposCambio = snapshot.val();
-      let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
-      let ultimo = tiposCambio[claveUltimo];
-      let euro = ultimo.euro;
-      let precioPesos = Number((precio * euro).toFixed(4));
+    if(moneda == "PESO") {
+      $('#precioPesos').val(precio);
+      $('#helpBlockPrecioMoneda').addClass('hidden');
+    }
+    else if (moneda == "DOLAR") {
+      rutaTipoCambio.once('value').then(function(snapshot) {
+        let tiposCambio = snapshot.val();
+        let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
+        let ultimo = tiposCambio[claveUltimo];
+        let dolar = ultimo.dolar;
+        let precioPesos = Number((precio * dolar).toFixed(4));
 
-      $('#precioPesos').val(precioPesos);
-    });
+        $('#precioPesos').val(precioPesos);
+        $('#helpBlockPrecioMoneda').addClass('hidden');
+      });
+    }
+    else if (moneda == "EURO") {
+      rutaTipoCambio.once('value').then(function(snapshot) {
+        let tiposCambio = snapshot.val();
+        let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
+        let ultimo = tiposCambio[claveUltimo];
+        let euro = ultimo.euro;
+        let precioPesos = Number((precio * euro).toFixed(4));
+
+        $('#precioPesos').val(precioPesos);
+        $('#helpBlockPrecioMoneda').addClass('hidden');
+      });
+    }
+    else {
+      $('#precio').parent().parent().addClass('has-error');
+      $('#helpBlockPrecioMoneda').removeClass('hidden');
+    }
   }
   else {
-    $('#precio').parent().parent().addClass('has-error');
-    $('#helpBlockPrecioPesos').removeClass('hidden');
+    $('#precio').parent().addClass('has-error');
+    $('#helpBlockPrecio').removeClass('hidden');
+    $('#helpBlockPrecioMoneda').addClass('hidden');
   }
+});
+
+$('#tabla-subProductos').on( 'page.dt', function () {
+    var table = $(this).DataTable();
+    pagina = table.page();
 });
 
 function guardarPrecio(claveSubProducto, idInput) {
@@ -480,8 +607,11 @@ function guardarPrecio(claveSubProducto, idInput) {
     let moneda = snap.val().moneda;
     let rutaTipoCambio = db.ref('tipoCambio');
 
+    // var table = $('#tabla-subProductos').DataTable();
+    // pagina = table.page();
+    // console.log(pagina)
+
     if(moneda == "PESO") {
-      console.log("PESO");
       rutaSubProducto.update({
         precio: precio,
         precioPesos: precio
@@ -494,29 +624,35 @@ function guardarPrecio(claveSubProducto, idInput) {
         let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
         let ultimo = tiposCambio[claveUltimo];
         let dolar = ultimo.dolar
-        let precioDolar = Number((precio * ultimo.dolar).toFixed(4));
+        let precioPesos = Number((precio * ultimo.dolar).toFixed(4));
+
+        // var table = $('#tabla-subProductos').DataTable();
+        // pagina = table.page();
 
         rutaSubProducto.update({
           precio: precio,
-          precioPesos: precioDolar
+          precioPesos: precioPesos
         });
         $.toaster({priority: 'info', title: 'Info:', message: `Se actualizó el precio del subProducto ${claveSubProducto}`});
       });
     }
     else if(moneda == "EURO") {
-      console.log("EURO");
       rutaTipoCambio.once('value', function(snapshot) {
-        let tiposCambio = snap.val();
+        let tiposCambio = snapshot.val();
         let claveUltimo = Object.keys(tiposCambio)[Object.keys(tiposCambio).length -1];
         let ultimo = tiposCambio[claveUltimo];
+
         let euro = ultimo.euro;
-        let precioEuro = Number((precio * euro).toFixed(4));
+        let precioPesos = Number((precio * euro).toFixed(4));
 
         rutaSubProducto.update({
           precio: precio,
-          precioPesos: precioEuro
+          precioPesos: precioPesos
         });
         $.toaster({priority: 'info', title: 'Info:', message: `Se actualizó el precio del subProducto ${claveSubProducto}`});
+
+        // var table = $('#tabla-subProductos').DataTable();
+        // pagina = table.page;
       });
     }
   });
@@ -562,6 +698,56 @@ function actualizarPrecioPesos() {
 }
 
 actualizarPrecioPesos();
+
+$('#modal-subproductos').on('shown.bs.modal', function() {
+  $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+});
+
+function prepararPDF() {
+
+  let tabla = $(`#tablaImprimir`).DataTable({
+    destroy: true,
+    "lengthChange": false,
+    "scrollY": "500px",
+    "scrollCollapse": true,
+    "language": {
+      "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+    },
+    "ordering": false,
+    "searching": false,
+    "paginating": false,
+    dom: 'Bfrtip',
+    buttons: ['excel', 'pdf']
+    // [
+    //   {
+    //     extend: 'print',
+    //     text: 'Imprimir <i class="glyphicon glyphicon-print"></i>',
+    //     className: "btn btn-default",
+    //     autoPrint: true
+    //   }
+    // ]
+  });
+
+  let rutaSubProductos = db.ref('subProductos');
+  rutaSubProductos.once('value', function(snap) {
+    let subProductos = snap.val();
+    let filas = "";
+    tabla.clear();
+
+    for(let subProducto in subProductos) {
+      filas += `<tr>
+                  <td>${subProducto}</td>
+                  <td>${subProductos[subProducto].nombre}</td>
+                  <td>${subProductos[subProducto].precio}</td>
+                  <td>${subProductos[subProducto].precioPesos}</td>
+                </tr>`;
+    }
+
+    tabla.rows.add($(filas)).columns.adjust().draw();
+  });
+
+  $('#modal-subproductos').modal('show');
+}
 
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
