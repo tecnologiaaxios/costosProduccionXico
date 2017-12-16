@@ -156,6 +156,7 @@ function abrirModalConfirmar(claveSubProducto) {
 function eliminarSubProducto(claveSubProducto) {
   let rutaSubProductos = db.ref('subProductos');
   rutaSubProductos.child(claveSubProducto).remove();
+  $('#modal-confirmar').modal('hide');
 }
 
 function abrirModalAgregar() {
@@ -190,8 +191,8 @@ function permitirEditar() {
   $('#nombre-ver').removeAttr('readonly');
   $('#codigoBarras-ver').removeAttr('readonly');
   $('#nombreProveedor-ver').removeAttr('readonly');
-  $('#categoria-ver').removeAttr('readonly');
-  $('#unidad-ver').removeAttr('readonly');
+  $('#categoria-ver').removeAttr('disabled');
+  $('#unidad-ver').removeAttr('disabled');
   $('#descripcion-ver').removeAttr('readonly');
 
   $('#btnGuardar').removeClass('disabled');
@@ -201,8 +202,8 @@ $('#modal-ver').on('hide.bs.modal', function() {
   $('#nombre-ver').attr('readonly', true);
   $('#codigoBarras-ver').attr('readonly', true);
   $('#nombreProveedor-ver').attr('readonly', true);
-  $('#categoria-ver').attr('readonly', true);
-  $('#unidad-ver').attr('readonly', true);
+  $('#categoria-ver').attr('disabled', true);
+  $('#unidad-ver').attr('disabled', true);
   $('#descripcion-ver').attr('readonly', true);
 
   $('#nombre-ver').parent().removeClass('has-error');
@@ -255,12 +256,12 @@ function agregarSubProducto() {
         }
 
         rutaSubProducto.set(nuevoSubProducto);
-        $.toaster({priority: 'success', title: 'Mensaje:', message: `El sub producto se ha guardado`});
+        $.toaster({priority: 'success', title: 'Mensaje', message: `El sub producto se ha guardado`});
 
         cerrarModalAgregar();
       }
       else {
-        $.toaster({priority: 'warning', title: 'Mensaje:', message: `Ya hay un subproducto con esa clave`});
+        $.toaster({priority: 'warning', title: 'Mensaje', message: `Ya hay un subproducto con esa clave`});
 
         $('#clave').val('');
         $('#nombre').val('');
@@ -333,10 +334,10 @@ function actualizarSubProducto() {
   let clave = $('#clave-ver').val(),
       nombre = $('#nombre-ver').val(),
       codigoBarras = $('#codigoBarras-ver').val(),
-      nombreProveedor = $('#nombreProveedor').val();
+      nombreProveedor = $('#nombreProveedor-ver').val();
       categoria = $('#categoria-ver').val(),
-      unidad = $('#unidad').val(),
-      descripcion = $('#descripcion').val();
+      unidad = $('#unidad-ver').val(),
+      descripcion = $('#descripcion-ver').val();
 
   if(nombre.length > 0 && categoria != undefined && categoria != null && unidad != undefined && unidad != null) {
     let rutaSubProducto = db.ref(`subProductos/${clave}`);
