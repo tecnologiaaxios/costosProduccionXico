@@ -5,7 +5,100 @@ function logout() {
   auth.signOut();
 }
 
+$(document).ready(function() {
+  $('[data-toggle="tooltip"]').tooltip();
+
+  $('#fecha').val(moment().format('YYYY-MM-DD'));
+
+  db.ref('costosProduccion/').on('value', (datos) => {
+    localStorage.setItem('productos', JSON.stringify(datos));
+  }); 
+
+  mostrarProductos();
+  llenarSelectCategorias();
+  llenarSelectProductos();
+
+  $.toaster({
+    settings: {
+      'timeout': 3000
+    }
+  });
+});
+
 function mostrarProductos() {
+  let productos = JSON.parse(localStorage.getItem('productos'));
+  let thumbnailsXs = "", thumbnailsSm = "", thumbnailsMd = "", thumbnailsLg = "";
+
+  for(let producto in productos) {
+    thumbnailsXs += `<div class="col-xs-12">
+                      <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                        <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                          <div class="panel-heading">
+                            <h3 class="text-center">${producto}</h3>
+                          </div>
+                          <img src="img/${producto}.jpg" style="height: 200px;">
+                          <div class="panel-footer">
+                            <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                            <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>`;
+
+    thumbnailsSm += `<div class="col-sm-6">
+                      <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                        <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                          <div class="panel-heading">
+                            <h3 class="text-center">${producto}</h3>
+                          </div>
+                          <img src="img/${producto}.jpg" style="height: 200px;">
+                          <div class="panel-footer">
+                            <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                            <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>`;
+
+    thumbnailsMd += `<div class="col-md-3">
+                      <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                        <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                          <div class="panel-heading">
+                            <h3 class="text-center">${producto}</h3>
+                          </div>
+                          <img src="img/${producto}.jpg" style="height: 200px;">
+                          <div class="panel-footer">
+                            <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                            <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>`;
+
+    thumbnailsLg += `<div class="col-lg-2">
+                      <a class="thumbnail-a" onclick="abrirModalProducto('${producto}')">
+                        <div class="thumbnail card" data-toggle="tooltip" data-placement="bottom" title="${productos[producto].nombre}">
+                          <div class="panel-heading">
+                            <h3 class="text-center">${producto}</h3>
+                          </div>
+                          <img src="img/${producto}.jpg" style="height: 200px;">
+                          <div class="panel-footer">
+                            <h4 class="text-center">Peso: ${productos[producto].kilos} Kg</h4>
+                            <h4 class="text-center">Costo: $ ${productos[producto].costo}</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>`;
+  }
+
+  $('#fila-xs').html(thumbnailsXs);
+  $('#fila-sm').html(thumbnailsSm);
+  $('#fila-md').html(thumbnailsMd);
+  $('#fila-lg').html(thumbnailsLg);
+  $('[data-toggle="tooltip"]').tooltip();
+}
+
+/* function mostrarProductos() {
   let costos = db.ref('costosProduccion');
   costos.on('value', function(datos) {
     let productos = datos.val();
@@ -79,7 +172,7 @@ function mostrarProductos() {
     $('#fila-lg').html(thumbnailsLg);
     $('[data-toggle="tooltip"]').tooltip();
   });
-}
+} */
 
 $('#modalProducto').on('hide.bs.modal', function() {
   let claveProducto = $('#claveProducto').val();
@@ -503,20 +596,4 @@ Chart.plugins.register({
       }
     });
   }
-});
-
-$(document).ready(function() {
-  $('[data-toggle="tooltip"]').tooltip();
-
-  $('#fecha').val(moment().format('YYYY-MM-DD'));
-
-  mostrarProductos();
-  llenarSelectCategorias();
-  llenarSelectProductos();
-
-  $.toaster({
-    settings: {
-      'timeout': 3000
-    }
-  });
 });
